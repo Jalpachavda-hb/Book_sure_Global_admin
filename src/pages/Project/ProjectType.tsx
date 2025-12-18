@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 
 interface Projecttype {
-  id: string; // ✅ keep ID as string
+  id: string;
   name: string;
 }
 
@@ -67,14 +67,19 @@ export default function ProjectType() {
     setEditOpen(true);
   };
 
-  const { canDelete, canEdit,  canView, loading: permissionLoading } = usePermissions();
+  const {
+    canDelete,
+    canEdit,
+    canView,
+    loading: permissionLoading,
+  } = usePermissions();
   const canViewProperties = canView("Properties");
   // const canCreateProperties = canCreate("Properties");
   const canEditProperties = canEdit("Properties");
   const canDeleteProperties = canDelete("Properties");
   const hasAnyActionPermission = canEditProperties || canDeleteProperties;
 
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
     if (editData) {
       setEditData({ ...editData, [e.target.name]: e.target.value });
     }
@@ -159,7 +164,7 @@ export default function ProjectType() {
           <div className="flex flex-wrap gap-2 justify-end items-center">
             <TextField
               size="small"
-               className="dark:bg-gray-200 rounded-md"
+              className="dark:bg-gray-200 rounded-md"
               variant="outlined"
               placeholder="Search..."
               value={search}
@@ -260,8 +265,6 @@ export default function ProjectType() {
               ".MuiSvgIcon-root": {
                 color: "#9CA3AF",
               },
-              
-              
             }}
           />
         </div>
@@ -284,7 +287,6 @@ export default function ProjectType() {
             name="name"
             value={editData?.name || ""}
             onChange={handleEditChange}
-            
           />
         </DialogContent>
         <DialogActions>

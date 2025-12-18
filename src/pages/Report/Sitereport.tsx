@@ -7,7 +7,7 @@ import {
 } from "../../components/ui/table";
 import { copyTableData, downloadCSV } from "../../utils/copy";
 import { printTableData } from "../../utils/printTableData";
-import { fetchSiteReports } from "../../utils/Handlerfunctions/getdata";
+import { fetchSiteReports ,getSiteId ,getAdminId} from "../../utils/Handlerfunctions/getdata";
 import { usePermissions } from "../../hooks/usePermissions";
 import AccessDenied from "../../components/ui/AccessDenied";
 import TablePagination from "@mui/material/TablePagination";
@@ -62,13 +62,22 @@ export default function Sitereport() {
     setPage(0);
   };
 
-  useEffect(() => {
-    const loadReports = async () => {
-      const data = await fetchSiteReports("1"); // Pass adminId dynamically
-      setTableData(data);
-    };
-    loadReports();
-  }, []);
+
+  const adminId = getAdminId(); // ✅ REQUIRED
+  const siteId = getSiteId();   // ✅ OPTIONAL (can be null/undefined)
+useEffect(() => {
+  if (!adminId) return; // safety guard
+
+  const loadReports = async () => {
+    const data = await fetchSiteReports(
+      adminId,
+      siteId || undefined // 👈 optional
+    );
+    setTableData(data);
+  };
+
+  loadReports();
+}, [adminId, siteId]); 
 
   const filteredData = tableData.filter((item) => {
     const searchTerm = search.trim().toLowerCase(); // remove spaces at start & end

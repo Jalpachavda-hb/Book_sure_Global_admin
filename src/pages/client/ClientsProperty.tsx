@@ -219,7 +219,7 @@ export default function ClientProperty() {
               onChange={(e) => setSearch(e.target.value.trimStart())}
               sx={{ fontFamily: "Poppins" }}
               InputProps={{ sx: { fontFamily: "Poppins", fontSize: "14px" } }}
-                className="dark:bg-gray-200 rounded-md"
+              className="dark:bg-gray-200 rounded-md"
             />
           </div>
         </div>
@@ -270,7 +270,7 @@ export default function ClientProperty() {
                         <div className="flex gap-2 mt-1">
                           <Link
                             to={`/admin/clients/${item.id}`}
-                            state={{ siteName: item.siteName }} 
+                            state={{ siteName: item.siteName }}
                             className="text-blue-500 hover:text-blue-700"
                           >
                             <Badge variant="light" color="success">
@@ -306,21 +306,19 @@ export default function ClientProperty() {
               onRowsPerPageChange={handleChangeRowsPerPage}
               rowsPerPageOptions={[5, 10, 25]}
               labelRowsPerPage="Rows per page:"
-               sx={{
-              color: "#9CA3AF", // text-gray-400
-              ".MuiSelect-select": {
-                color: "#9CA3AF",
-              },
-              ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
-                {
+              sx={{
+                color: "#9CA3AF", // text-gray-400
+                ".MuiSelect-select": {
                   color: "#9CA3AF",
                 },
-              ".MuiSvgIcon-root": {
-                color: "#9CA3AF",
-              },
-              
-              
-            }}
+                ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
+                  {
+                    color: "#9CA3AF",
+                  },
+                ".MuiSvgIcon-root": {
+                  color: "#9CA3AF",
+                },
+              }}
             />
           </div>
         </div>

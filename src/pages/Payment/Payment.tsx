@@ -165,14 +165,14 @@ export default function Payment() {
     }
   };
 
-const handleAmountChange = (val: number | "") => {
-  setReceivedAmount(val);
+  const handleAmountChange = (val: number | "") => {
+    setReceivedAmount(val);
 
-  const errorMsg =
-    val === "" ? "Please enter a valid amount" : validateAmount(val);
+    const errorMsg =
+      val === "" ? "Please enter a valid amount" : validateAmount(val);
 
-  setErrors((prev) => ({ ...prev, receivedAmount: errorMsg }));
-};
+    setErrors((prev) => ({ ...prev, receivedAmount: errorMsg }));
+  };
   const handleReceiptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -266,18 +266,18 @@ const handleAmountChange = (val: number | "") => {
   };
 
   const validateAmount = (amount: number): string => {
-  if (!amount || amount <= 0) {
-    return "Please enter a valid amount";
-  }
+    if (!amount || amount <= 0) {
+      return "Please enter a valid amount";
+    }
 
-  if (amount > maxAllowedAmount) {
-    return amountType === "GST Amount"
-      ? "Received GST amount exceeds balance"
-      : "Received principal amount exceeds balance";
-  }
+    if (amount > maxAllowedAmount) {
+      return amountType === "GST Amount"
+        ? "Received GST amount exceeds balance"
+        : "Received principal amount exceeds balance";
+    }
 
-  return "";
-};
+    return "";
+  };
 
   const columns = [
     { key: "clientName", label: "Client Name" },

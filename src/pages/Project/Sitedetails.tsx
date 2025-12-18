@@ -9,10 +9,13 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import Badge from "../../components/ui/badge/Badge";
 import TablePagination from "@mui/material/TablePagination";
-import { fetchSiteDetails } from "../../utils/Handlerfunctions/getdata";
+import {
+  fetchSiteDetails,
+  getAdminId,getSiteId
+} from "../../utils/Handlerfunctions/getdata";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { useEffect, useState, useMemo , } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { TextField, Button } from "@mui/material";
 
 import {} from "@mui/material";
@@ -27,7 +30,13 @@ interface sitedetails {
 }
 
 export default function sitedetails() {
-  const { canDelete, canEdit, canCreate, canView, loading: permissionLoading } = usePermissions();
+  const {
+    canDelete,
+    canEdit,
+    canCreate,
+    canView,
+    loading: permissionLoading,
+  } = usePermissions();
   const canViewProperties = canView("Properties");
 
   const canCreateProperties = canCreate("Properties");
@@ -51,22 +60,31 @@ export default function sitedetails() {
   // const handleEdit = (id: sitedetails) => {
   //   window.location.href = `site_details/Addsite/${id}`;
   // };
-   const handleEdit = (id: string) => {
+  const handleEdit = (id: string) => {
     window.location.href = `/admin/projects/site_details/Addsite/${id}`;
   };
 
-  const loadSiteDetails = async () => {
-    try {
-      const data = await fetchSiteDetails();
-      setSiteDetails(data);
-    } catch (error) {
-      console.error("Error loading site details:", error);
-    }
-  };
+const loadSiteDetails = async () => {
+  try {
+    const adminId = getAdminId();
+    const siteId = getSiteId(); // optional
 
-  useEffect(() => {
-    loadSiteDetails();
-  }, []);
+    if (!adminId) return;
+
+    const data = await fetchSiteDetails(
+      adminId,
+      siteId || undefined
+    );
+
+    setSiteDetails(data);
+  } catch (error) {
+    console.error("Error loading site details:", error);
+  }
+};
+
+useEffect(() => {
+  loadSiteDetails();
+}, []);
 
   const handleDelete = async (id: string) => {
     try {
@@ -296,7 +314,7 @@ export default function sitedetails() {
               size="small"
               variant="outlined"
               placeholder="Search..."
-                className="dark:bg-gray-200 rounded-md"
+              className="dark:bg-gray-200 rounded-md"
               value={search}
               onChange={(e) => setSearch(e.target.value.trimStart())}
               sx={{ fontFamily: "Poppins" }}
@@ -425,21 +443,19 @@ export default function sitedetails() {
               onRowsPerPageChange={handleChangeRowsPerPage}
               rowsPerPageOptions={[5, 10, 25]}
               labelRowsPerPage="Rows per page:"
-        sx={{
-              color: "#9CA3AF", // text-gray-400
-              ".MuiSelect-select": {
-                color: "#9CA3AF",
-              },
-              ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
-                {
+              sx={{
+                color: "#9CA3AF", // text-gray-400
+                ".MuiSelect-select": {
                   color: "#9CA3AF",
                 },
-              ".MuiSvgIcon-root": {
-                color: "#9CA3AF",
-              },
-              
-              
-            }}
+                ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
+                  {
+                    color: "#9CA3AF",
+                  },
+                ".MuiSvgIcon-root": {
+                  color: "#9CA3AF",
+                },
+              }}
             />
           </div>
         </div>

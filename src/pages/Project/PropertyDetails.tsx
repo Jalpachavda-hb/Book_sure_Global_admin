@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { showPropertyDetailsList } from "../../utils/Handlerfunctions/getdata";
+import { showPropertyDetailsList ,getAdminId ,getSiteId  } from "../../utils/Handlerfunctions/getdata";
 import { deletePropertyDetails } from "../../utils/Handlerfunctions/formdeleteHandlers";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -88,29 +88,59 @@ export default function PropertyDetails() {
   //   (isColumnVisible("unitNumber") ? 1 : 0) +
   //   (hasAnyActionPermission && isColumnVisible("Action") ? 1 : 0);
 
-  const fetchPageData = async (pageNumber = 1) => {
-    setLoading(true);
-    try {
-      const res = await showPropertyDetailsList(pageNumber);
-      if (res) {
-        setTableData(res.data || []);
-        setTotalRecords(res.total || 0);
-        setRowsPerPage(res.per_page || 12);
-        setPage(res.current_page ? res.current_page - 1 : 0);
-      }
-    } catch (error) {
-      console.error("Error fetching property details:", error);
-      toast.error("Failed to load property details");
-      setTableData([]);
-      setTotalRecords(0);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchPageData = async (pageNumber = 1) => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await showPropertyDetailsList(pageNumber);
+  //     if (res) {
+  //       setTableData(res.data || []);
+  //       setTotalRecords(res.total || 0);
+  //       setRowsPerPage(res.per_page || 12);
+  //       setPage(res.current_page ? res.current_page - 1 : 0);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching property details:", error);
+  //     toast.error("Failed to load property details");
+  //     setTableData([]);
+  //     setTotalRecords(0);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+const adminId = getAdminId();
+const siteId = getSiteId();
+const fetchPageData = async (pageNumber = 1) => {
+  if (!adminId) return;
 
-  useEffect(() => {
+  setLoading(true);
+  try {
+    const res = await showPropertyDetailsList(
+      adminId,
+      pageNumber,
+      siteId || undefined
+    );
+
+    if (res) {
+      setTableData(res.data);
+      setTotalRecords(res.total);
+      setRowsPerPage(res.per_page);
+
+      // backend page (1-based) → UI page (0-based)
+      setPage(res.current_page - 1);
+    }
+  } catch (error) {
+    toast.error("Failed to load property details");
+    setTableData([]);
+    setTotalRecords(0);
+  } finally {
+    setLoading(false);
+  }
+};
+useEffect(() => {
+  if (adminId) {
     fetchPageData(1);
-  }, []);
+  }
+}, [adminId, siteId]);
 
   const handleDelete = async (id: number) => {
     if (!id) {
@@ -283,7 +313,6 @@ export default function PropertyDetails() {
               <Select
                 multiple
                 value={selectedColumns}
-                
                 onChange={(e) => {
                   const value = e.target.value;
                   setSelectedColumns(

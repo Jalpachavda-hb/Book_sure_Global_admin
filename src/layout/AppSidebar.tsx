@@ -292,7 +292,50 @@ const AppSidebar: React.FC = () => {
     return null;
   };
 
+  const getUserId = (): number | null => {
+    const user = sessionStorage.getItem("user");
+    if (user) {
+      try {
+        const parsed = JSON.parse(user);
+        return parsed.id || null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const userId = getUserId();
+
   const userRole = getUserRole();
+
+  // const filterMenuItems = useCallback(
+  //   (items: NavItem[]) => {
+  //     return items.filter((item) => {
+  //       if (item.name === "Dashboard") return true;
+  //       if (["Pending for Approvals", "Web Settings"].includes(item.name))
+  //         return userRole === 1;
+  //       if (!canView(item.permission || "")) return false;
+
+  //       if (item.subItems) {
+  //         item.subItems = item.subItems
+  //           .map((sub) => {
+  //             if (sub.subSubItems) {
+  //               sub.subSubItems = sub.subSubItems.filter((s) =>
+  //                 canView(s.permission || "")
+  //               );
+  //             }
+  //             return sub;
+  //           })
+  //           .filter((sub) => canView(sub.permission || ""));
+
+  //         return item.subItems.length > 0;
+  //       }
+  //       return true;
+  //     });
+  //   },
+  //   [canView, userRole ,userId]
+  // );
 
   const filterMenuItems = useCallback(
     (items: NavItem[]) => {
@@ -312,14 +355,20 @@ const AppSidebar: React.FC = () => {
               }
               return sub;
             })
-            .filter((sub) => canView(sub.permission || ""));
+            .filter((sub) => {
+              // Hide "Ticket History" if user ID is not 1
+              if (sub.name === "Ticket History" && userRole !== 1) {
+                return false;
+              }
+              return canView(sub.permission || "");
+            });
 
           return item.subItems.length > 0;
         }
         return true;
       });
     },
-    [canView, userRole]
+    [canView, userRole, userId]
   );
 
   const handleSubmenuToggle = (index: number, menuType: "main" | "others") => {

@@ -22,6 +22,8 @@ import {
 import {
   fetchClientReports,
   fetchClientReportSummary,
+  getSiteId,
+  getAdminId,
 } from "../../utils/Handlerfunctions/getdata";
 import { copyTableData, downloadCSV } from "../../utils/copy";
 
@@ -62,7 +64,7 @@ export default function Clientreport() {
     total_remaining_gst_amount: "₹0",
   });
 
- const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = [
     { key: "clientName", label: "Client Name" },
     { key: "purchasedSiteName", label: "Purchased Site Name" },
     { key: "unitType", label: "Unit Type" },
@@ -75,18 +77,19 @@ export default function Clientreport() {
     { key: "remainingGstAmount", label: "Remaining GST Amount" },
     { key: "ledger", label: "Ledger" },
   ];
-
+  const adminId = getAdminId(); // ✅ REQUIRED
+  const siteFilter = getSiteId();
   // fetch reports
   useEffect(() => {
-    const loadData = async () => {
-      const reports = await fetchClientReports("1"); // pass adminId dynamically
-      if (reports) {
-        setTableData(reports);
-      }
-    };
-    loadData();
-  }, []);
+    if (!adminId) return;
 
+    const loadData = async () => {
+      const reports = await fetchClientReports(adminId, siteFilter || undefined);
+      setTableData(reports);
+    };
+
+    loadData();
+  }, [adminId, siteFilter]);
   // fetch summary
   useEffect(() => {
     const loadSummary = async () => {
@@ -233,7 +236,7 @@ export default function Clientreport() {
               <TextField
                 size="small"
                 variant="outlined"
-                  className="dark:bg-gray-200 rounded-md"
+                className="dark:bg-gray-200 rounded-md"
                 placeholder="Search..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value.trimStart())}
@@ -399,20 +402,18 @@ export default function Clientreport() {
               rowsPerPageOptions={[5, 10, 25, 30]}
               labelRowsPerPage="Rows per page:"
               sx={{
-              color: "#9CA3AF", // text-gray-400
-              ".MuiSelect-select": {
-                color: "#9CA3AF",
-              },
-              ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
-                {
+                color: "#9CA3AF", // text-gray-400
+                ".MuiSelect-select": {
                   color: "#9CA3AF",
                 },
-              ".MuiSvgIcon-root": {
-                color: "#9CA3AF",
-              },
-              
-              
-            }}
+                ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
+                  {
+                    color: "#9CA3AF",
+                  },
+                ".MuiSvgIcon-root": {
+                  color: "#9CA3AF",
+                },
+              }}
             />
           </div>
         </div>

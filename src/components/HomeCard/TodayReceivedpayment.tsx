@@ -326,10 +326,7 @@ export default function TodayReceivedpaymentTable() {
               ".MuiSvgIcon-root": {
                 color: "#9CA3AF",
               },
-              
-              
             }}
-            
           />
         </div>
       </div>
