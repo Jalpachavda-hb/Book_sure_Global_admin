@@ -1,499 +1,195 @@
 import axiosInstance from "../axiosinstance";
 import { toast } from "react-toastify";
 import { API_PATHS } from "../apiPaths";
-import { getAdminId } from "./getdata";
 
-export const handleDeleteSplashScreen = async (id: number) => {
+export const deleteSoftware = async (id: number) => {
   try {
-    const adminId = getAdminId();
-    if (!adminId) {
-      toast.error("Admin ID not found");
-      return false;
-    }
-    console.log("delete call");
-
-    // 🔥 Hit delete API with query params
-    const res = await axiosInstance.get(
-      API_PATHS.APPSETTING.DELETESPLASHSCREEN,
-      {
-        params: { admin_id: adminId, id },
-      }
+    const res = await axiosInstance.delete(
+      `${API_PATHS.SOFTWARE.DELETESOFTWARE}/${id}`,
     );
 
-    if (res.status === 200) {
-      toast.success("Splash screen deleted successfully!");
+    if (res.data.success) {
+      toast.success(res.data.message);
       return true;
     }
 
-    toast.error("Failed to delete splash screen");
+    toast.error(res.data.message);
     return false;
-  } catch (err: any) {
-    console.error("Error deleting splash screen:", err);
-    toast.error("Failed to delete splash screen");
-    return false;
-  }
-};
-
-export const deleteProjectType = async (id: string) => {
-  try {
-    const admin_id = getAdminId();
-
-    const response = await axiosInstance.post("/deleteProjectType", {
-      admin_id,
-      id,
-    });
-
-    return response.data; // { status, message }
   } catch (error) {
-    console.error("Error deleting project type:", error);
-    throw error;
+    console.error("Error deleting software:", error);
+    toast.error("Delete failed");
+    return false;
   }
 };
-
-export const deleteProjectCategory = async (id: string, adminId: string) => {
+export const deleteTestimonial = async (id: number) => {
   try {
-    const formData = new FormData();
-    formData.append("admin_id", adminId);
-    formData.append("id", id);
-
-    const response = await axiosInstance.post(
-      API_PATHS.PROJECTCATEGORY.DELETPROJECTCATEGORY,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
+    const res = await axiosInstance.delete(
+      `${API_PATHS.TESTIMONIAL.DELETETESTIMONIAL}/${id}`,
     );
 
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting project category:", error);
-    throw error;
-  }
-};
-
-export const deleteCommonDocument = async (id: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    throw new Error("Admin ID not found");
-  }
-
-  const formData = new FormData();
-  formData.append("id", id);
-  formData.append("admin_id", adminId);
-
-  return await axiosInstance.post(
-    API_PATHS.COMMONDOCUMENTS.DELETECOMMONDOCUMENTS,
-    formData
-  );
-};
-
-export const deletePersonalDocument = async (id: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return false;
-  }
-
-  console.log("delete call");
-
-  const formData = new FormData();
-  formData.append("id", id);
-  formData.append("admin_id", adminId);
-
-  const res = await axiosInstance.post(
-    API_PATHS.PERSONALDOCUMENT.DELETEPersonalDocuments,
-    formData
-  );
-
-  return res;
-};
-
-export const deleteAdminUser = async (id: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return false;
-  }
-
-  try {
-    console.log("Deleting Admin User ID:", id);
-
-    const formData = new FormData();
-    formData.append("adminuser_id", id);
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.ADMINUSERAPI.DELETEADMINUSER,
-      formData
-    );
-
-    if (res?.status === 200) {
-      toast.success("Admin user deleted successfully!");
-      return true;
-    } else {
-      toast.error(res?.data?.message || "Failed to delete admin user");
-      return false;
-    }
-  } catch (error: any) {
-    console.error("Delete Admin User failed:", error);
-    toast.error("Failed to delete admin user");
-    return false;
-  }
-};
-
-export const deletePropertyDetails = async (block_detail_id: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return false;
-  }
-
-  try {
-    console.log("Deleting PropertyDetail ID:", block_detail_id);
-
-    const formData = new FormData();
-    formData.append("block_detail_id", block_detail_id);
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.SITEDETAILS.DELETEPROPERTYDETAILS,
-      formData
-    );
-
-    const status = res?.data?.status || res?.status; // safely check both places
-
-    // ✅ Case 1: Normal success
-    if (status === 200) {
-      toast.success("Property Detail deleted successfully!");
+    if (res.data.success) {
+      toast.success(res.data.message || "Deleted Successfully ✅");
       return true;
     }
 
-    // ✅ Case 2: Backend returns status 401 but we still want success toast
-    if (status === 401) {
-      toast.warning(
-        res?.data?.message ||
-          "Block detail cannot be deleted as it is assigned to a client."
-      );
-      return false;
-    }
-
-    // ❌ Case 3: Any other response
-    toast.error(res?.data?.message || "Failed to delete Property Detail");
+    toast.error(res.data.message || "Delete Failed ❌");
     return false;
   } catch (error: any) {
-    console.error("Delete Property Detail failed:", error);
+    console.error("Delete Error:", error);
 
-    // Handle thrown Axios error (non-2xx)
-    const backendStatus = error?.response?.data?.status;
-    const backendMessage = error?.response?.data?.message;
-
-    if (backendStatus === 401) {
-      toast.success(
-        backendMessage ||
-          "Block detail cannot be deleted as it is assigned to a client."
-      );
-    } else {
-      toast.error(backendMessage || "Failed to delete Property Detail");
-    }
+    toast.error(error.response?.data?.message || "Something went wrong ❌");
 
     return false;
   }
 };
 
-export const destroyPaymentDetails = async (payment_id: number) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return false;
-  }
-
+export const deleteFaq = async (id: number): Promise<boolean> => {
   try {
-    console.log("Deleting ProprtyDetail ID:", payment_id);
-
-    const formData = new FormData();
-    formData.append("payment_id", String(payment_id));
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.PAYMENT.DESTROYPAYMENTDETAILS,
-      formData
+    const res = await axiosInstance.delete(
+      `${API_PATHS.CONTACT.DELETEFAQ}/${id}`,
     );
 
-    if (res?.status === 200) {
-      // toast.success("Payment Details deleted successfully!");
+    if (res.data?.success) {
+      toast.success(res.data?.message || "Deleted Successfully ✅");
       return true;
-    } else {
-      toast.error(res?.data?.message || "Failed to delete PaymentDetails");
-      return false;
     }
+
+    toast.error(res.data?.message || "Delete Failed ❌");
+    return false;
   } catch (error: any) {
-    console.error("Delete Payment Details failed:", error);
-    toast.error("Failed to delete Payment Details");
+    console.error("Delete FAQ Error:", error);
+
+    toast.error(error.response?.data?.message || "Something went wrong ❌");
+
     return false;
   }
 };
 
-export const deleteClient = async (id: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return false;
-  }
+// export const deletecontactMail = async (id: number): Promise<boolean> => {
+//   try {
+//     const res = await axiosInstance.delete(
+//       `${API_PATHS.CONTACT.DELETEEMAIL}/${id}`
+//     );
 
+//     if (res.data?.success) {
+//       toast.success(res.data?.message || "Deleted Successfully ✅");
+//       return true;
+//     }
+
+//     toast.error(res.data?.message || "Delete Failed ❌");
+//     return false;
+//   } catch (error: any) {
+//     console.error("Delete Mail Error:", error);
+
+//     toast.error(
+//       error.response?.data?.message || "Something went wrong ❌"
+//     );
+
+//     return false;
+//   }
+// };
+
+export const deleteFounder = async (id: number): Promise<boolean> => {
   try {
-    console.log("Deleting Client ID:", id);
-
-    const formData = new FormData();
-    formData.append("client_milestone_id", id);
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.CLIENTDATA.DELETECLIENTDAT,
-      formData
+    const res = await axiosInstance.delete(
+      `${API_PATHS.OURASSOCIATE.DELETEFOUNDER}/${id}`,
     );
 
-    if (res?.status === 200) {
-      toast.success("Client deleted successfully!");
+    if (res.data?.success) {
+      toast.success(res.data.message || "Deleted Successfully ✅");
       return true;
-    } else {
-      toast.error(res?.data?.message || "Failed to delete Client");
-      return false;
     }
+
+    toast.error(res.data.message || "Delete Failed ❌");
+    return false;
   } catch (error: any) {
-    console.error("Delete Client failed:", error);
-    toast.error("Failed to delete Client");
+    console.error("Delete Founder Error:", error);
+
+    toast.error(error.response?.data?.message || "Something went wrong ❌");
+
     return false;
   }
 };
 
-export const closeTicket = async (ticketId: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found. Please login again.");
-    return { success: false };
-  }
-
+export const deleteService = async (id: number): Promise<boolean> => {
   try {
-    const formData = new FormData();
-    formData.append("ticket_id", ticketId);
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.TICKET.CLOSETICKET,
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
+    const res = await axiosInstance.delete(
+      `${API_PATHS.SERVICES.DELETESERVICES}/${id}`,
     );
 
-    if (res?.status === 200) {
-      toast.success(res?.data?.message || "Ticket closed successfully!");
-      return { success: true, data: res.data };
-    } else {
-      toast.error(res?.data?.message || "Failed to close ticket");
-      return { success: false };
-    }
-  } catch (error: any) {
-    console.error("Close ticket failed:", error);
-    toast.error("Something went wrong while closing ticket");
-    return { success: false };
-  }
-};
-
-// pending for Approvals
-export const reject = async (
-  client_milestone_id: number,
-  description?: string
-) => {
-  try {
-    const adminId = getAdminId();
-    if (!adminId) throw new Error("Admin ID not found");
-
-    const res = await axiosInstance.post(
-      API_PATHS.PENDINGFORAPPROVALSTABLE.REJECT,
-      {
-        admin_id: adminId,
-        client_milestone_id,
-        description, // optional reject reason
-      }
-    );
-
-    return res.data;
-  } catch (err) {
-    console.error("Error rejecting:", err);
-    throw err;
-  }
-};
-
-export const approve = async (client_milestone_id: number) => {
-  try {
-    const adminId = getAdminId();
-    if (!adminId) throw new Error("Admin ID not found");
-
-    const res = await axiosInstance.post(
-      API_PATHS.PENDINGFORAPPROVALSTABLE.APPROVALS,
-      {
-        admin_id: adminId,
-        client_milestone_id,
-      }
-    );
-
-    return res.data;
-  } catch (err) {
-    console.error("Error approving:", err);
-    throw err;
-  }
-};
-
-export const deleteClientAadharCard = async (id: string): Promise<boolean> => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return false;
-  }
-
-  try {
-    console.log("Deleting Client Aadhar Card, ID:", id);
-
-    const formData = new FormData();
-    formData.append("client_milestone_id", id);
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.CLIENTDATA.DELETECLIENTADHARCARD,
-      {
-        admin_id: adminId,
-        id,
-      }
-    );
-
-    if (res?.status === 200) {
-      toast.success("Aadhar card deleted successfully!");
+    /* ✅ Success */
+    if (res.data?.success) {
+      toast.success(res.data.message || "Service deleted successfully ✅");
       return true;
-    } else {
-      toast.error(res?.data?.message || "Failed to delete Aadhar card");
-      return false;
     }
+
+    /* ❌ Backend returned success:false */
+    toast.error(res.data.message || "Failed to delete service ❌");
+    return false;
   } catch (error: any) {
-    console.error("Delete Aadhar card failed:", error);
-    toast.error("Failed to delete Aadhar card");
+    console.error("Delete Service Error:", error);
+
+    /* ✅ Proper Backend Error Message */
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong ❌";
+
+    toast.error(errorMessage);
+
     return false;
   }
 };
 
-// ✅ Delete Client PAN Card
-export const deleteClientPanCard = async (id: string): Promise<boolean> => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return false;
-  }
-
+export const deletesubService = async (id: number): Promise<boolean> => {
   try {
-    console.log("Deleting Client PAN Card, ID:", id);
-
-    const formData = new FormData();
-    formData.append("client_milestone_id", id);
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.CLIENTDATA.DELETECLIENTPANCARD,
-      {
-        admin_id: adminId,
-        id,
-      }
+    const res = await axiosInstance.delete(
+      `${API_PATHS.SUBSERVICES.DELETESUBSERVICES}/${id}`,
     );
 
-    if (res?.status === 200) {
-      toast.success("PAN card deleted successfully!");
+    /* ✅ Success */
+    if (res.data?.success) {
+      toast.success(res.data.message || "Service deleted successfully ✅");
       return true;
-    } else {
-      toast.error(res?.data?.message || "Failed to delete PAN card");
-      return false;
     }
+
+    /* ❌ Backend returned success:false */
+    toast.error(res.data.message || "Failed to delete service ❌");
+    return false;
   } catch (error: any) {
-    console.error("Delete PAN card failed:", error);
-    toast.error("Failed to delete PAN card");
+    console.error("Delete Service Error:", error);
+
+    /* ✅ Proper Backend Error Message */
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong ❌";
+
+    toast.error(errorMessage);
+
     return false;
   }
 };
 
-export const deleteSite = async (id: string) => {
-  const adminId = getAdminId();
-  if (!adminId) return { success: false, message: "Admin ID not found" };
 
+export const deleteteam = async (id: number): Promise<boolean> => {
   try {
-    const formData = new FormData();
-    formData.append("site_id", id);
-    formData.append("admin_id", adminId);
-
-    const res = await axiosInstance.post(
-      API_PATHS.SITEDETAILS.DELETESITE,
-      formData
+    const res = await axiosInstance.delete(
+      `${API_PATHS.TEAM.DELETETEAMMEMBER}/${id}`,
     );
 
-    if (res?.status === 200) return { success: true, message: "Site deleted!" };
-    return {
-      success: false,
-      message: res?.data?.message || "Failed to delete site",
-    };
+    if (res.data?.success) {
+      toast.success(res.data.message || "Deleted Successfully ✅");
+      return true;
+    }
+
+    toast.error(res.data.message || "Delete Failed ❌");
+    return false;
   } catch (error: any) {
-    return { success: false, message: "Failed to delete site" };
-  }
-};
+    console.error("Delete Founder Error:", error);
 
-export const deleteslider = async (id: string) => {
-  try {
-    const formData = new FormData();
-    formData.append("slider_id", id);
+    toast.error(error.response?.data?.message || "Something went wrong ❌");
 
-    const res = await axiosInstance.post(
-      API_PATHS.WEBSETTING.DELETESLIDER,
-      formData
-    );
-
-    if (res?.status === 200)
-      return { success: true, message: "Slide deleted!" };
-
-    return { success: false, message: res.data?.message || "Failed to delete" };
-  } catch {
-    return { success: false, message: "Failed to delete" };
-  }
-};
-export const deleteTestimonial = async (id: number | string) => {
-  try {
-    const formData = new FormData();
-    formData.append("Testimonialer_id", String(id)); // FIXED KEY NAME
-
-    const res = await axiosInstance.post(
-      API_PATHS.WEBSETTING.DELETETETESTIMONIAL,
-      formData
-    );
-
-    if (res?.status === 200)
-      return { success: true, message: "Testimonial deleted!" };
-
-    return { success: false, message: res.data?.message || "Failed to delete" };
-  } catch {
-    return { success: false, message: "Failed to delete" };
-  }
-};
-
-
-
-export const deleteheroslider = async (id: number | string) => {
-  try {
-    const formData = new FormData();
-    formData.append("id", String(id)); // FIXED KEY NAME
-
-    const res = await axiosInstance.post(
-      API_PATHS.WEBSETTING.DELETESLIDERHERO,
-      formData
-    );
-
-    if (res?.status === 200)
-      return { success: true, message: "Testimonial deleted!" };
-
-    return { success: false, message: res.data?.message || "Failed to delete" };
-  } catch {
-    return { success: false, message: "Failed to delete" };
+    return false;
   }
 };

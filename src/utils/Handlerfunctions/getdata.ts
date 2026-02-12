@@ -7,7 +7,7 @@ export const getAdminId = (): string | null => {
   if (user) {
     try {
       const parsed = JSON.parse(user);
-      return parsed.admin_id?.toString() || null;
+      return parsed.id?.toString() || null;
     } catch {
       return null;
     }
@@ -15,1210 +15,471 @@ export const getAdminId = (): string | null => {
   return null;
 };
 
-export const getSiteId = (): string | null => {
-  const user = sessionStorage.getItem("user");
-  if (user) {
-    try {
-      const parsed = JSON.parse(user);
-      return parsed.site_id?.toString() || null;
-    } catch {
-      return null;
-    }
+export const Dashboardcount = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.HEROSECTION.GETDASHBOARDCOUNT,
+    );
+    return response.data; // { success, message, data }
+  } catch (error) {
+    console.error("Error fetching hero:", error);
+    return {
+      success: false,
+      message: "Failed to fetch dashboard Count",
+      data: null,
+    };
   }
-  return null;
 };
 
-export const getRoleId = (): string | null => {
-  const user = sessionStorage.getItem("user");
-  if (user) {
-    try {
-      const parsed = JSON.parse(user);
-      return parsed.role_id?.toString() || null;
-    } catch {
-      return null;
-    }
+export const getHero = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.HEROSECTION.GETHEROSECTION,
+    );
+    return response.data; // { success, message, data }
+  } catch (error) {
+    console.error("Error fetching hero:", error);
+    return {
+      success: false,
+      message: "Failed to fetch hero section",
+      data: null,
+    };
   }
-  return null;
 };
 
-export const getUserRole = (): number | null => {
-  const user = sessionStorage.getItem("user");
-  if (user) {
-    try {
-      const parsed = JSON.parse(user);
-      return parsed.role_id || parsed.role || null;
-    } catch {
-      return null;
-    }
+export const fetchWebSetting = async () => {
+  const res = await axiosInstance.get(API_PATHS.WEBSETTINGBOOK.GETWEBSETTING);
+  return res.data.data;
+};
+
+export const getHomeAbout = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.HOMEABOUTSECTION.GETHOMEABOUT,
+    );
+    return response.data; // { success, data }
+  } catch (error) {
+    console.error("Error fetching about:", error);
+    return {
+      success: false,
+      data: null,
+    };
   }
-  return null;
+};
+
+export const getHelp = async () => {
+  try {
+    const response = await axiosInstance.get(API_PATHS.HELP.GETHELPSECTION);
+    return response.data; // { success, data }
+  } catch (error) {
+    console.error("Error fetching help:", error);
+    return { success: false, data: null };
+  }
+};
+export const getwhychooseus = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.WHYCHOSSEUS.GETWHYCHOOSEUS,
+    );
+    return response.data;
+  } catch {
+    return { success: false, data: null };
+  }
 };
 
 export const fetchProfile = async () => {
-  try {
-    const res = await axiosInstance.get(
-      `${API_PATHS.ADMINAUTH.GET_PROFILE}?admin_id=${getAdminId()}`
-    );
-
-    const data = res.data.data;
-
-    return {
-      admin_id: data.id, // 👈 map 'id' to 'admin_id'
-      name: data.name,
-      email: data.email,
-      role_id: data.role_id,
-      contact_no: data.contact_no?.toString() || "",
-    };
-  } catch (err: any) {
-    toast.error("Failed to fetch profile");
-    throw err;
-  }
-};
-
-export const fetchDashboardCount = async () => {
-  try {
-    const admin_id = getAdminId(); // 👈 fetch from session
-    if (!admin_id) throw new Error("Admin ID not found");
-
-    const res = await axiosInstance.get(
-      `${API_PATHS.DASHBOARD.DASHBOARDCOUNT}?admin_id=${admin_id}`
-    );
-
-    const data = res.data.data;
-    return {
-      clientCount: data.clientCount,
-      projectTypes: data.projectTypes,
-      adminUsers: data.adminUsers,
-      siteDetailsCount: data.siteDetailsCount,
-      today_payment: data.today_payment,
-      sitenames: data.sitenames,
-    };
-  } catch (err: any) {
-    toast.error("Failed to fetch Dashboardcount");
-    throw err;
-  }
-};
-
-// ==============5=======================//
-
-// USER LOG FATCH DATA API
-
-// WITH PAGINATION LOGIC
-
-// export const fetchAdminLogs = async (page: number = 1, perPage: number = 12) => {
-//   try {
-//     const res = await axiosInstance.get(
-//       `${API_PATHS.ADMIN.GET_LOGS}?page=${page}&per_page=${perPage}`
-//     );
-//     return res.data;
-//   } catch (err: any) {
-//     toast.error("Failed to fetch admin logs");
-//     throw err;
-//   }
-// };
-
-// ============================
-
-// =========================
-
-// SITE DETAILS
-
-// ==============================
-// WEBSETTING API
-
-export const fetchWebSetting = async () => {
-  try {
-    const res = await axiosInstance.get(API_PATHS.WEBSETTING.GETWEBSETTING);
-    return res.data.data;
-  } catch (err: any) {
-    toast.error("Failed to fetch Web Setting ❌");
-    throw err;
-  }
-};
-// ==========================
-
-export const fetchSlider = async () => {
-  try {
-    const response = await axiosInstance.get(API_PATHS.WEBSETTING.GETSLIDER);
-
-    if (response.status === 200 && response.data?.data) {
-      return response.data.data; // ✅ returns array of sliders
-    } else {
-      toast.error("No slider data found ⚠️");
-      return [];
-    }
-  } catch (error: any) {
-    console.error("Error fetching slider:", error);
-    toast.error("Failed to fetch slider data ❌");
-    throw error;
-  }
-};
-
-export const gettesTimonial = async () => {
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.WEBSETTING.GETTESTIMONIAL
-    );
-
-    if (response.status === 200 && response.data?.data) {
-      return response.data.data; // ✅ returns array of sliders
-    } else {
-      toast.error("No testimonial data found ⚠️");
-      return [];
-    }
-  } catch (error: any) {
-    console.error("Error fetching testimonial:", error);
-    toast.error("Failed to fetch testimonial data ❌");
-    throw error;
-  }
-};
-
-export const gettesaboutus = async () => {
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.WEBSETTING.GETABOUTSECTION
-    );
-
-    if (response.status === 200 && response.data?.data) {
-      return response.data.data; // ✅ returns array of sliders
-    } else {
-      toast.error("No testimonial data found ⚠️");
-      return [];
-    }
-  } catch (error: any) {
-    console.error("Error fetching testimonial:", error);
-    toast.error("Failed to fetch testimonial data ❌");
-    throw error;
-  }
-};
-
-export const herosliders = async () => {
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.WEBSETTING.GETHEROSECTION
-    );
-
-    if (response.status === 200 && response.data?.data) {
-      return response.data.data; // ✅ returns array of sliders
-    } else {
-      toast.error("No hero section data found ⚠️");
-      return [];
-    }
-  } catch (error: any) {
-    console.error("Error fetching hero section:", error);
-    toast.error("Failed to fetch hero section data ❌");
-    throw error;
-  }
-};
-
-// APP SEETING
-export const fetchSplashScreens = async (adminId: string) => {
-  try {
-    const res = await axiosInstance.get(API_PATHS.APPSETTING.GETSPLASHSCREEN, {
-      params: { admin_id: adminId },
-    });
-    return res.data.data; // data array from your API response
-  } catch (err) {
-    console.error("Error fetching splash screens:", err);
-    throw err;
-  }
-};
-
-// ==================
-// SITE INQUERY
-
-export const fetchSiteInquiry = async (
-  adminId: string,
-  siteFilter?: string | number,
-  searchByDays?: number
-) => {
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.SITEINQUIRY.SHOWSITEINQUIRY,
-      {
-        params: {
-          admin_id: adminId,
-          siteFilter: siteFilter || "",
-          searchByDays: searchByDays || "",
-        },
-      }
-    );
-
-    return response.data?.data || []; // return array of inquiries
-  } catch (error) {
-    console.error("Error fetching site inquiry:", error);
-    throw error;
-  }
-};
-
-export const fetchInquiryThrough = async (adminId: string) => {
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.SITEINQUIRY.INQUIRYTHROUGH,
-      {
-        params: { admin_id: adminId },
-      }
-    );
-
-    // Ensure response has correct structure
-    return response.data?.data || [];
-  } catch (error) {
-    console.error("Error fetching inquiry through:", error);
-    throw error;
-  }
-};
-
-// export const fetchSiteList = async (adminId:number) => {
-//   try {
-//     const response = await axiosInstance.get(
-//       API_PATHS.MULTITIMEUSEAPI.SHOWCODESITELIST,
-//       { params: { admin_id: adminId }, }
-//     );
-
-//     return (
-//       response.data?.data?.map((site: { id: number; title: string }) => ({
-//         value: site.id,
-//         label: site.title,
-//       })) || []
-//     );
-//   } catch (error) {
-//     console.error("Error fetching site list:", error);
-//     return [];
-//   }
-// };
-export const fetchSiteDetails = async (
-  admin_id: string | number,
-  site_id?: string | number
-) => {
-  try {
-    if (!admin_id) {
-      console.warn("Admin ID missing");
-      return [];
-    }
-
-    const params: Record<string, string | number> = {
-      admin_id,
-    };
-
-    // add site_id only if provided
-    if (site_id !== undefined && site_id !== null) {
-      params.site_id = site_id;
-    }
-
-    const res = await axiosInstance.get(API_PATHS.SITEDETAILS.GETSITEDETAILS, {
-      params,
-    });
-
-    return res.data?.data ?? [];
-  } catch (err) {
-    toast.error("Failed to fetch site details");
-    return [];
-  }
-};
-
-export const fetchSiteList = async (
-  site_id?: string | number
-) => {
-  try {
-    const params: Record<string, string | number> = {};
-
-    // add site_id only if available
-    if (site_id !== undefined && site_id !== null && site_id !== "") {
-      params.site_id = site_id;
-    }
-
-    const response = await axiosInstance.get(
-      API_PATHS.MULTITIMEUSEAPI.SHOWCODESITELIST,
-      { params }
-    );
-
-    return (
-      response.data?.data?.map((site: { id: number; title: string }) => ({
-        value: site.id.toString(),
-        label: site.title,
-      })) || []
-    );
-  } catch (error) {
-    console.error("Error fetching site list:", error);
-    return [];
-  }
-};
-
-// =============================
-// get payment details
-
-// utils/Handlerfunctions/getPaymentData.ts
-
-export interface PaymentDetails {
-  id: string;
-  clientName: string;
-  siteName: string;
-  unitNo: string;
-  propertyAmount: string;
-  gstAmount: string;
-  receivedDate: string;
-  receivedAmountType: string;
-  receivedAmount: string;
-  receiptUrl: string;
-}
-
-export const fetchPaymentDetails = async (
-  adminId: string,
-  site_id?: string,
-  dateFilter?: number
-): Promise<PaymentDetails[]> => {
-  try {
-    const params = new URLSearchParams();
-
-    if (adminId) params.append("admin_id", adminId);
-    if (site_id) params.append("site_id", site_id);
-    if (dateFilter && dateFilter > 0)
-      params.append("searchByDays", dateFilter.toString());
-
-    const response = await axiosInstance.get(
-      `${API_PATHS.PAYMENT.SHOWPAYMENTDETAILS}?${params.toString()}`
-    );
-
-    if (response.data.status === 200) {
-      return response.data.data.map((item: any) => ({
-        id: item.id.toString(),
-        clientName: item.name || "N/A",
-        siteName: item.title || "N/A",
-        unitNo: item.block_number || "N/A",
-        propertyAmount: `₹${item.property_amount ?? 0}`,
-        gstAmount: `₹${item.gst_amount ?? 0}`,
-        receivedDate: item.received_payment_date || "N/A",
-        receivedAmountType: item.received_amount_type || "N/A",
-        receivedAmount: `₹${item.received_amount ?? 0}`,
-        receiptUrl: item.payment_receipt || "",
-      }));
-    }
-
-    return [];
-  } catch (error) {
-    console.error("Error fetching payment details:", error);
-    return [];
-  }
-}; // ==============================
-
-export const fetchClientReportSummary = async (adminId: string) => {
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.CLIENTREPORT.SHOWCLIENTREPORTSUMMERY,
-      {
-        params: { admin_id: adminId },
-      }
-    );
-
-    if (response.data.status === 200) {
-      return response.data.data;
-    }
-
-    return null;
-  } catch (error) {
-    console.error("Error fetching client report summary:", error);
-    return null;
-  }
-};
-
-export const fetchClientReports = async (
-  adminId: string,
-  siteFilter?: string
-) => {
-  try {
-    if (!adminId) {
-      throw new Error("Admin ID is required");
-    }
-
-    const params: any = {
-      admin_id: adminId,
-    };
-
-    // add site_id only if it exists
-    if (siteFilter) {
-      params.siteFilter = siteFilter;
-    }
-
-    const response = await axiosInstance.get(
-      API_PATHS.CLIENTREPORT.SHOWCLIENTREPORT,
-      { params }
-    );
-
-    if (response.data.status === 200) {
-      return response.data.data.map((item: any) => ({
-        id: item.client_id + "-" + item.block_detail_id, // unique id
-        clientName: item.name || "N/A",
-        purchasedSiteName: item.title || "N/A",
-        unitType: item.bhk_details || "N/A",
-        unitNumber: item.block_number || "N/A",
-        principalAmount: `₹${item.property_amount ?? 0}`,
-        gstAmount: `₹${item.gst_amount ?? 0}`,
-        receivedPrincipalAmount: `₹${
-          item.total_received_principal_amount ?? 0
-        }`,
-        receivedGstAmount: `₹${item.total_received_gst_amount ?? 0}`,
-        remainingPrincipalAmount: `₹${
-          item.total_remaining_principal_amount ?? 0
-        }`,
-        remainingGstAmount: `₹${item.total_remaining_gst_amount ?? 0}`,
-        ledger: "", // keep empty unless API provides ledger_url
-      }));
-    }
-    return [];
-  } catch (error) {
-    console.error("Error fetching client reports:", error);
-    return [];
-  }
-};
-
-// export const fetchSiteReports = async (adminId: string) => {
-//   try {
-//     const res = await axiosInstance.get(API_PATHS.SITEREPORT.SHOWSITEREPORT, {
-//       params: { admin_id: adminId },
-//     });
-
-//     if (res.data.status === 200) {
-//       return res.data.data; // return only the data array
-//     }
-//     return [];
-//   } catch (err) {
-//     console.error("Error fetching site reports:", err);
-//     return [];
-//   }
-// };
-
-export const fetchSiteReports = async (adminId: string, siteId?: string) => {
-  try {
-    if (!adminId) {
-      throw new Error("Admin ID is required");
-    }
-
-    const params: any = {
-      admin_id: adminId,
-    };
-
-    // add site_id only if it exists
-    if (siteId) {
-      params.site_id = siteId;
-    }
-
-    const res = await axiosInstance.get(API_PATHS.SITEREPORT.SHOWSITEREPORT, {
-      params,
-    });
-
-    if (res.data.status === 200) {
-      return res.data.data;
-    }
-
-    return [];
-  } catch (err) {
-    console.error("Error fetching site reports:", err);
-    return [];
-  }
-};
-
-export const fetchProjectTypes = async () => {
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.PROJECTTYPE.GETPROJECTTYPE
-    );
-    return response.data?.data || []; // return array of project types
-  } catch (error) {
-    console.error("Error fetching project types:", error);
-    return [];
-  }
-};
-
-// GET PROJECT TYPE
-
-export const fetchProjectcategory = async (adminId?: string) => {
-  try {
-    const res = await axiosInstance.get(
-      API_PATHS.PROJECTCATEGORY.GETPROJECTCATEGORY,
-      {
-        params: adminId ? { admin_id: adminId } : {},
-      }
-    );
-    return res.data.status === 200 ? res.data.data : [];
-  } catch (err) {
-    console.error("Error fetching project Category:", err);
-    return [];
-  }
-};
-
-export const fetchCommonDocuments = async (adminId: string) => {
-  try {
-    const res = await axiosInstance.get(
-      API_PATHS.COMMONDOCUMENTS.SHOWCOMMUNDOCUMENT,
-      {
-        params: adminId ? { admin_id: adminId } : {},
-      }
-    );
-    return res.data?.data || [];
-  } catch (err) {
-    console.error("Error fetching common documents:", err);
-    return [];
-  }
-};
-
-export const fetchAdminUsers = async () => {
   const adminId = getAdminId();
 
   if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
+    throw new Error("Admin ID not found");
   }
 
-  try {
-    const res = await axiosInstance.get(API_PATHS.ADMINUSERAPI.SHOWADMINUSER, {
-      params: { admin_id: adminId },
-    });
-
-    return res.data; // return only API response
-  } catch (error) {
-    console.error("Error fetching admin users:", error);
-    toast.error("Failed to fetch admin users");
-    throw error;
-  }
-};
-
-export const fetchAdminTickets = async (siteId?: string) => {
-  const adminId = getAdminId();
-
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
-  }
-
-  try {
-    const params: any = { admin_id: adminId };
-    if (siteId) {
-      params.requestSiteFilter = siteId; // pass selected site filter if available
-    }
-
-    const res = await axiosInstance.get(API_PATHS.TICKET.SHOWADMINTICKET, {
-      params,
-    });
-
-    return res.data;
-  } catch (error) {
-    console.error("Error fetching admin tickets:", error);
-    toast.error("Failed to fetch tickets");
-    throw error;
-  }
-};
-
-export const fetchUnitNumbersBySite = async (siteId: number) => {
-  try {
-    const response = await axiosInstance.get(
-      `${API_PATHS.PAYMENT.GETBLOCKDETAILSFROMSITE}?site_id=${siteId}`
-    );
-
-    return (
-      response.data?.data?.map(
-        (unit: { id: number; block_number: string }) => ({
-          value: unit.id.toString(),
-          label: unit.block_number, // ✅ use block_number for dropdown label
-        })
-      ) || []
-    );
-  } catch (error) {
-    console.error("Error fetching unit numbers:", error);
-    return [];
-  }
-};
-
-export const fetchClientNamesByBlockId = async (blockId: number) => {
-  try {
-    const response = await axiosInstance.get(
-      `${API_PATHS.MULTITIMEUSEAPI.GETCLIENTNAMEFROMBLOCKID}?block_details_id=${blockId}`
-    );
-
-    return (
-      response.data?.data?.map((client: { id: number; name: string }) => ({
-        value: client.id.toString(),
-        label: client.name, // ✅ client name in dropdown
-      })) || []
-    );
-  } catch (error) {
-    console.error("Error fetching client names:", error);
-    return [];
-  }
-};
-
-export const fetchPersonalDocuments = async () => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found. Please login again.");
-    return [];
-  }
-
-  try {
-    const res = await axiosInstance.get(
-      `${API_PATHS.PERSONALDOCUMENT.GETPERSONALDOCUMENT}?admin_id=${adminId}`
-    );
-
-    if (res.data.status === 200) {
-      return res.data.data; // array of docs
-    } else {
-      console.error(res.data.message || "Failed to fetch documents");
-      return [];
-    }
-  } catch (error: any) {
-    console.error("Error fetching personal documents:", error);
-    toast.error(error.response?.data?.message || "Something went wrong");
-    return [];
-  }
-};
-
-export const fetchRolePermissions = async () => {
-  const adminId = getAdminId();
-
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
-  }
-
-  try {
-    const response = await axiosInstance.get(
-      API_PATHS.ADMINAUTH.ADMINROLEPERMISSION,
-      {
-        params: { admin_id: adminId },
-      }
-    );
-
-    if (response.data.status === 200) {
-      return response.data.data;
-    }
-  } catch (error) {
-    console.error("Error fetching role permissions:", error);
-    toast.error("Error fetching role permissions");
-    throw error;
-  }
-};
-
-export const getAdminUserById = async (id: string) => {
-  try {
-    const res = await axiosInstance.get(
-      `${API_PATHS.ADMINUSERAPI.GETADMINUSER}?admin_id=${id}`
-    );
-    return res.data;
-  } catch (err) {
-    console.error("Error fetching admin user:", err);
-    throw err;
-  }
-};
-
-// export const showPropertyDetailsList = async (
-//   // site_id?: number | string,
-//   page?: number
-// ) => {
-//   const adminId = getAdminId();
-//   if (!adminId) {
-//     toast.error("Admin ID not found");
-//     return null;
-//   }
-
-//   try {
-//     const res = await axiosInstance.get(
-//       API_PATHS.SITEDETAILS.PROPERTYDETAILSLIST,
-//       {
-//         params: {
-//           admin_id: adminId,
-//           // site_id: site_id ?? "",
-//           page: page ?? "",
-//         },
-//       }
-//     );
-
-//     const mappedData = res.data?.details?.map((item: any) => ({
-//       id: item.block_detail_id,
-//       siteName: item.title,
-//       unit: item.block,
-//       unitNumber: item.block_number,
-//     }));
-
-//     return {
-//       data: mappedData || [],
-//       total: res.data.pagination?.total || 0,
-//       per_page: res.data.pagination?.per_page || 12,
-//       current_page: res.data.pagination?.current_page || 1,
-//     };
-//   } catch (error) {
-//     console.error("Error fetching property details:", error);
-//     toast.error("Failed to fetch property details");
-//     return null;
-//   }
-// };
-
-export const showPropertyDetailsList = async (
-  adminId: number | string,
-  page: number = 1,
-  siteId?: number | string
-) => {
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
-  }
-
-  try {
-    const params: any = {
-      admin_id: adminId,
-      page,
-    };
-
-    // add site_id only if present
-    if (siteId) {
-      params.site_id = siteId;
-    }
-
-    const res = await axiosInstance.get(
-      API_PATHS.SITEDETAILS.PROPERTYDETAILSLIST,
-      { params }
-    );
-
-    const mappedData =
-      res.data?.details?.map((item: any) => ({
-        id: item.block_detail_id,
-        siteName: item.title,
-        unit: item.block,
-        unitNumber: item.block_number,
-      })) || [];
-
-    return {
-      data: mappedData,
-      total: res.data.pagination?.total || 0,
-      per_page: res.data.pagination?.per_page || 12,
-      current_page: res.data.pagination?.current_page || 1,
-    };
-  } catch (error) {
-    console.error("Error fetching property details:", error);
-    toast.error("Failed to fetch property details");
-    return null;
-  }
-};
-
-export const fetchAdminLogs = async (page: number) => {
-  try {
-    const res = await axiosInstance.get(
-      `${API_PATHS.USERLOG.GETUSERADMINLOG}?page=${page}`
-    );
-    return res.data;
-  } catch (err: any) {
-    toast.error("Failed to fetch admin logs");
-    throw err;
-  }
-};
-
-export const TodayReceivedpayment = async (siteId: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
-  }
-
-  try {
-    const res = await axiosInstance.get(
-      API_PATHS.DASHBOARD.TODAYRECEIVEDPAYMENT,
-      {
-        params: { admin_id: adminId, site_id: siteId },
-      }
-    );
-    return res.data || null;
-  } catch (error) {
-    console.error(`Error fetching Payment data for siteId ${siteId}:`, error);
-    toast.error("Failed to fetch Payment data");
-    return null;
-  }
-};
-
-export const showTicketHistory = async () => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
-  }
-
-  try {
-    const res = await axiosInstance.get(API_PATHS.TICKET.SHOWTICKETGISTORY, {
-      params: { admin_id: adminId },
-    });
-    return res.data || null;
-  } catch (error) {
-    toast.error("Failed to Ticket history data");
-    return null;
-  }
-};
-
-export const showclientTicket = async (requestSiteFilter?: string) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
-  }
-
-  try {
-    const res = await axiosInstance.get(API_PATHS.TICKET.SHOWCLIENTTICKET, {
-      params: {
-        admin_id: adminId,
-        requestSiteFilter: requestSiteFilter || "", // 👈 match your backend param
-      },
-    });
-    return res.data || null;
-  } catch (error) {
-    toast.error("Failed to fetch Ticket history data");
-    return null;
-  }
-};
-
-export const showclientlist = async (
-  siteId: string,
-  page: number = 1,
-  perPage?: number
-) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found");
-    return null;
-  }
-
-  try {
-    const res = await axiosInstance.get(API_PATHS.CLIENTDATA.SHOWCLIENTLIST, {
-      params: {
-        admin_id: adminId,
-        site_id: siteId,
-        page,
-        ...(perPage && { per_page: perPage }),
-      },
-    });
-    return res.data || null;
-  } catch (error) {
-    console.error(`Error fetching site data for siteId ${siteId}:`, error);
-    toast.error("Failed to fetch site data");
-    return null;
-  }
-};
-
-export interface DropdownOption {
-  label: string;
-  value: string;
-  id?: number;
-}
-
-export const fetchUnitType = async (): Promise<DropdownOption[]> => {
-  try {
-    const response = await axiosInstance.get<{ data: string[] }>(
-      API_PATHS.MULTITIMEUSEAPI.UNITTYPE
-    );
-
-    // Map array of strings into dropdown-friendly objects
-    return (
-      response.data?.data?.map((item: any, index: number) => ({
-        label: item,
-        value: item,
-        id: index,
-      })) || []
-    );
-  } catch (error) {
-    console.error("Error fetching unit types:", error);
-    return [];
-  }
-};
-
-interface Client {
-  id: number | string; // match your backend type
-  name: string;
-  block_detail_id?: any;
-}
-
-export const getClientName = async (): Promise<DropdownOption[]> => {
-  try {
-    const response = await axiosInstance.get<{ data: Client[] }>(
-      API_PATHS.MULTITIMEUSEAPI.GETCLIENTNAMEFROMSITEID
-    );
-
-    return (
-      response.data?.data?.map((item: any) => ({
-        label: item.name,
-        value: item.id,
-      })) || []
-    );
-  } catch (error) {
-    console.error("Error fetching client names:", error);
-    return [];
-  }
-};
-
-export const getClientCountOfSite = async (siteId?: string) => {
-  const adminId = getAdminId();
-  if (!adminId) throw new Error("Admin ID not found");
-
-  // ✅ Send admin_id as query param
   const res = await axiosInstance.get(
-    API_PATHS.CLIENTDATA.GETCLIENTECOUNTOFSITE,
-    {
-      params: { admin_id: adminId, site_id: siteId },
-    }
+    `${API_PATHS.ADMINAUTH.GET_PROFILE}/${adminId}`,
   );
 
-  return res.data?.data || [];
+  const data = res.data.data;
+
+  return {
+    admin_id: data.id,
+    name: data.name,
+    email: data.email,
+    contact_number: data.contact_number,
+    password: "",
+  };
 };
 
-export const getBlockFromSiteId = async (siteId: string) => {
+export const fetchSoftware = async () => {
   try {
-    const response = await axiosInstance.get(
-      API_PATHS.MULTITIMEUSEAPI.GETBLOCKFROMSITEID,
-      { params: { site_id: siteId } }
-    );
-    // map into {label, value}
-    return (
-      response.data?.data?.map((item: any) => ({
-        label: item.block,
-        value: item.id,
-      })) || []
-    );
+    const res = await axiosInstance.get(API_PATHS.SOFTWARE.GETSOFTWARE);
+
+    return res.data.data;
   } catch (error) {
-    console.error("Error fetching block list:", error);
-    return [];
+    console.error("Error fetching active software:", error);
+    toast.error("Failed to load active software images");
+    throw error;
   }
 };
 
-export const getBlockFromBlockid = async (block_id: string) => {
+export const fetchInActiveSoftware = async () => {
   try {
-    const response = await axiosInstance.get(
-      API_PATHS.MULTITIMEUSEAPI.GETBLOCKNUMBERFROMBLOCK,
-      { params: { block_id: block_id } }
-    );
+    const res = await axiosInstance.get(API_PATHS.SOFTWARE.GETINACTIVESOFTWARE);
 
-    // Check if response has data and it's an array
-    if (
-      response.data &&
-      response.data.data &&
-      Array.isArray(response.data.data)
-    ) {
-      return response.data.data.map((item: any) => ({
-        label: item.block_number,
-        value: item.id,
-      }));
-    }
-
-    console.error("Unexpected API response format:", response.data);
-    return [];
+    return res.data.data;
   } catch (error) {
-    console.error("Error fetching block list:", error);
+    console.error("Error fetching inactive software:", error);
+    toast.error("Failed to load inactive software images");
+    throw error;
+  }
+};
+
+/* ✅ GET ACTIVE */
+export const fetchActiveTestimonials = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.TESTIMONIAL.GETTESTIMONIAL);
+
+    return res.data.data; // ✅ Only Array
+  } catch (error) {
     return [];
   }
 };
-
-export const fetchBookingDetails = async (
-  // adminId: string,
-  client_id: number,
-  site_id: string,
-  block_id: string
-) => {
-  try {
-    const res = await axiosInstance.get(API_PATHS.CLIENTDATA.GETCLIENTPAYMENT, {
-      params: {
-        // ...(adminId ? { admin_id: adminId } : {}),
-        client_id,
-        site_id,
-        block_id, // 👈 match exactly what Postman expects
-      },
-    });
-
-    if (res.data.status === 200) {
-      return res.data.data || null;
-    } else {
-      toast.error(res.data.message || "Failed to fetch client payment details");
-      return null;
-    }
-  } catch (error: any) {
-    console.error("Error fetching client payment details:", error);
-    toast.error(error.response?.data?.message || "Something went wrong");
-    return null;
-  }
+/* ✅ GET INACTIVE */
+export const fetchInactiveTestimonials = async () => {
+  const res = await axiosInstance.get(
+    API_PATHS.TESTIMONIAL.GETINACTIVETESTIMONIAL,
+  );
+  return res.data.data;
 };
 
-export const fetchClientNameFromBlockId = async (block_id: string) => {
-  try {
-    const res = await axiosInstance.get(
-      API_PATHS.MULTITIMEUSEAPI.GETCLIENTNAMEFROMBLOCKID,
-      {
-        params: { block_details_id: block_id }, // backend expects block_details_id
+export const getcontactpage = async () => {
+  const res = await axiosInstance.get(API_PATHS.CONTACT.GETCONTACTMSG);
+  return res.data.data;
+};
+
+export const getcareerpage = async () => {
+  const res = await axiosInstance.get(API_PATHS.CAREERS.GETCAREERSMSG);
+  return res.data.data;
+};
+
+export interface CompanyHighlight {
+  stat_1_value: string;
+  stat_1_text: string;
+  stat_2_value: string;
+  stat_2_text: string;
+  stat_3_value: string;
+  stat_3_text: string;
+  stat_4_value: string;
+  stat_4_text: string;
+
+  mission_title: string;
+  mission_description: string;
+  mission_image: string;
+
+  vision_title: string;
+  vision_description: string;
+  vision_image: string;
+}
+export const getcompanyhighlight =
+  async (): Promise<CompanyHighlight | null> => {
+    try {
+      const res = await axiosInstance.get(
+        API_PATHS.COMPANYHIGHLIGHT.OURMISIION,
+      );
+
+      // Ensure we're returning the correct data structure
+      if (res.data && res.data.data) {
+        return res.data.data;
       }
-    );
-
-    if (res.data.status === 200 && res.data.data?.length > 0) {
-      const { id, name } = res.data.data[0];
-      return { clientId: id, clientName: name }; // return both
-    } else {
-      toast.error(res.data.message || "Failed to fetch client details");
-      return null;
+      return res.data;
+    } catch (error) {
+      console.error("Fetch Company Highlight Error:", error);
+      throw error; // Re-throw to handle in component
     }
-  } catch (error: any) {
-    console.error("Error fetching client name:", error);
-    toast.error(error.response?.data?.message || "Something went wrong");
-    return null;
+  };
+
+export const fetchFaq = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.CONTACT.GETACTIVEFAQ);
+
+    // ✅ Return array safely
+    return res.data?.data || [];
+  } catch (error) {
+    console.log("Active FAQ Fetch Error:", error);
+    return [];
   }
 };
-
-export const getpropertydetailsByblockId = async (blockDetailId: string) => {
+export const fetchInActiveFaq = async () => {
   try {
-    const adminId = getAdminId(); // 👈 fetch from local/session storage
-    if (!adminId) {
-      throw new Error("Admin ID not found");
-    }
+    const res = await axiosInstance.get(API_PATHS.CONTACT.GETINACTIVEFAQ);
 
-    const res = await axiosInstance.get(
-      `${API_PATHS.SITEDETAILS.GETBLOCKDETAILS}?admin_id=${adminId}&block_detail_id=${blockDetailId}`
-    );
-
-    return res;
-  } catch (err) {
-    console.error("Error fetching property detail:", err);
-    throw err;
-  }
-};
-
-export const fetchClientDetails = async (
-  adminId: string,
-  client_milestone_id: string
-) => {
-  try {
-    const res = await axiosInstance.get(
-      `${API_PATHS.CLIENTDATA.EDITCLIENT}?admin_id=${adminId}&client_milestone_id=${client_milestone_id}`
-    );
-
-    if (res.data.status === 200 && res.data.data) {
-      const d = res.data.data;
-
-      // normalize response
-      return {
-        site_detail_id: d.site_detail_id,
-        site_name: d.site_name || "",
-        name: d.eu_data?.name || "",
-        email: d.eu_data?.email || "",
-        contact: d.eu_data?.contact_no || "",
-        address: d.eu_data?.address || "",
-        unit_type: d.clientMileStoneData?.unit_type || "",
-        block_id: d.eu_data?.block_id || "",
-        block_detail_id: d.block_detail_id || "",
-        block_number: d.blockNumber || "",
-        property_amount: d.property_amount || "",
-        gst_slab: d.gst_slab || "",
-        gst_amount: d.gst_amount || "",
-        total_amount: d.total_amount || "",
-        password: d.eu_data?.user_password || "",
-        aadhar_card: d.eu_data?.adhar_card || "",
-        pan_card: d.eu_data?.pan_card || "",
-        client_type: "1",
-        existing_client_id: d.clientid || "",
-        clientid: d.clientid || "",
-      };
-    } else {
-      throw new Error(res.data.message || "Failed to fetch client details");
-    }
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Something went wrong");
-  }
-};
-
-export const getTicketMessages = async (id: string) => {
-  try {
-    const adminId = getAdminId(); // 👈 fetch from local/session storage
-    if (!adminId) {
-      throw new Error("Admin ID not found");
-    }
-
-    const res = await axiosInstance.get(
-      `${API_PATHS.TICKET.GETTICKETMESSAGES}?admin_id=${adminId}&ticket_id=${id}`
-    );
-
-    return res;
-  } catch (err) {
-    console.error("Error fetching property detail:", err);
-    throw err;
-  }
-};
-
-export const pendingForApprovals = async () => {
-  try {
-    const adminId = getAdminId();
-    if (!adminId) throw new Error("Admin ID not found");
-
-    const res = await axiosInstance.get(
-      `${API_PATHS.PENDINGFORAPPROVALSTABLE.PENDINGFORAPPROVALS}?admin_id=${adminId}`
-    );
-
-    if (res.data.status === 200 && res.data.data) {
-      // map API data to Aprovel type
-      return res.data.data.map((item: any) => ({
-        id: item.id,
-        clientName: item.name,
-        siteName: item.site_details,
-        contactNumber: item.contact_no,
-        Email: item.email,
-        blocknumber: item.block_number,
-      }));
-    } else {
-      return [];
-    }
-  } catch (err) {
-    console.error("Error fetching pending approvals:", err);
+    // ✅ Return array safely
+    return res.data?.data || [];
+  } catch (error) {
+    console.log("Inactive FAQ Fetch Error:", error);
     return [];
   }
 };
 
-export const getSiteData = async (adminId: string) => {
+export const GetContactPageInfo = async () => {
   try {
-    const res = await axiosInstance.get(API_PATHS.MULTITIMEUSEAPI.GETSITEDATA, {
-      params: { admin_id: adminId },
-    });
-    return res.data.status === 200 ? res.data.data : [];
-  } catch (err) {
-    console.error("Error fetching site data", err);
+    const res = await axiosInstance.get(API_PATHS.CONTACT.GETCONTACTPAGEINFO);
+
+    return res.data?.data || null;
+  } catch (error) {
+    console.log("Contact Page Fetch Error:", error);
+    return null;
+  }
+};
+
+export const fetchcontactemail = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.CONTACT.GETCONTACTEMAIL);
+
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching active software:", error);
+    toast.error("Failed to load active software images");
+    throw error;
+  }
+};
+
+export const GetAboutmain = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.ABOUTMAIN.GETABOUTMAIN);
+    return res.data || null; // Remove `.data` since your backend returns direct object
+  } catch (error) {
+    console.error("Get About Error:", error);
+    return null;
+  }
+};
+
+export const getActiveAssociate = async () => {
+  try {
+    const res = await axiosInstance.get(
+      API_PATHS.OURASSOCIATE.GETACTIVEFOUNDER,
+    );
+
+    // ✅ Return only array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get Active Associate Error:", error);
     return [];
   }
 };
-export const fetchSitedetails = async (id: string) => {
+
+export const getInactiveAssociate = async () => {
   try {
-    const response = await axiosInstance.get(
-      API_PATHS.SITEDETAILS.SITEDETAILSBYID,
-      {
-        params: { site_id: id },
-      }
+    const res = await axiosInstance.get(
+      API_PATHS.OURASSOCIATE.GETINACTIVEFOUNDER,
     );
 
-    // ✅ return full response, not just `data.data`
-    return response.data;
+    // ✅ Return only array
+    return res.data?.data || [];
   } catch (error) {
-    console.error("Error fetching site details:", error);
+    console.error("Get InActive Associate Error:", error);
+    return [];
+  }
+};
+
+export const getAssociateById = async (id: number) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_PATHS.OURASSOCIATE.GETBYID}/${id}`,
+    );
+
+    return res.data?.data || null; // ✅ single object
+  } catch (error) {
+    console.error("Get Associate By ID Error:", error);
     return null;
   }
 };
 
-export const getcontactusdata = async () => {
+export const getWhyChooseUs = async () => {
   try {
-    const response = await axiosInstance.get(API_PATHS.WEBSETTING.GETCONTACTUS);
+    const res = await axiosInstance.get(API_PATHS.WHYCHOSSEUS.GETWHYCHOOSEUS);
 
-    // ✅ return full response, not just `data.data`
-    return response.data;
+    return res.data; // {success:true,data:{}}
   } catch (error) {
-    console.error("Error fetching site details:", error);
+    console.error("Get WhyChooseUs Error:", error);
     return null;
   }
 };
 
-export const getmainaboutussection = async () => {
+export const getinquirymsg = async () => {
+  const res = await axiosInstance.get(API_PATHS.INQUIRY.GETPRICINGINQUIRY);
+  return res.data.data;
+};
+
+export const fetchInqueryemail = async () => {
   try {
-    const response = await axiosInstance.get(
-      API_PATHS.WEBSETTING.GETMAINABOUTUSSECTION
+    const res = await axiosInstance.get(API_PATHS.INQUIRY.GETINQUIRYEMAIL);
+
+    return res.data.data;
+  } catch (error) {
+    console.error("Error fetching active software:", error);
+    toast.error("Failed to load active software images");
+    throw error;
+  }
+};
+
+export const getDataSequrity = async () => {
+  try {
+    const res = await axiosInstance.get(
+      API_PATHS.DATASEQURITY.GETDATASECTIONDATA,
     );
 
-    // ✅ return full response, not just `data.data`
-    return response.data;
+    return res.data;
   } catch (error) {
-    console.error("Error fetching about details:", error);
+    console.error("Get Data Security Error:", error);
     return null;
+  }
+};
+
+export const getActivePricingModel = async () => {
+  try {
+    const res = await axiosInstance.get(
+      API_PATHS.PRICINGMODEL.GETACTIVEPRICINGMODELS,
+    );
+
+    // ✅ Return only array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get Active Pricing Model Error:", error);
+    return [];
+  }
+};
+
+export const getInActivePricingModel = async () => {
+  try {
+    const res = await axiosInstance.get(
+      API_PATHS.PRICINGMODEL.GETINACTIVEPRICINGMODELS,
+    );
+
+    // ✅ Return only array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get IN Active Pricing Model Error:", error);
+    return [];
+  }
+};
+
+export const getModelById = async (id: number) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_PATHS.PRICINGMODEL.GETPRICINGMODELBYID}/${id}`,
+    );
+
+    return res.data?.data || null; // ✅ single object
+  } catch (error) {
+    console.error("Get Pricing Model By ID Error:", error);
+    return null;
+  }
+};
+
+export const getActiveServices = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.SERVICES.GETACTIVESERVICES);
+
+    // ✅ Return only array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get Active Services Error:", error);
+    return [];
+  }
+};
+
+export const getInactiveServices = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.SERVICES.GETINACTIVESERVICES);
+
+    // ✅ Return only array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get Active Services Error:", error);
+    return [];
+  }
+};
+
+export const getServiceById = async (id: number) => {
+  try {
+    const res = await axiosInstance.get(`${API_PATHS.SERVICES.GETBYID}/${id}`);
+
+    return res.data?.data || null; // ✅ single object
+  } catch (error) {
+    console.error("Get Service By ID Error:", error);
+    return null;
+  }
+};
+export const getSubServiceBySlug = async (slug: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_PATHS.SUBSERVICES.GETSERVICEBYSLUG}/${slug}`,
+    );
+
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get SubService By Slug Error:", error);
+    return [];
+  }
+};
+
+export const getSubServiceById = async (id: number) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_PATHS.SUBSERVICES.EDITSUBSERVICEBYID}/${id}`,
+    );
+
+    return res.data?.data || null; // ✅ single object
+  } catch (error) {
+    console.error("Get SubService By ID Error:", error);
+    return null;
+  }
+};
+
+export const getInActiveSubServiceBySlug = async (slug: string) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_PATHS.SUBSERVICES.GETINACTIVESUBSERVICES}/${slug}`,
+    );
+
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get InActive SubService By Slug Error:", error);
+    return [];
+  }
+};
+
+
+export const getActiveteam_member = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.TEAM.GETTEAMMEMBERS);
+
+    // ✅ Return only array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get Active Services Error:", error);
+    return [];
+  }
+};
+export const getInactiveteam_member = async () => {
+  try {
+    const res = await axiosInstance.get(API_PATHS.TEAM.GETINACTIVETEAMMEMBERS);
+
+    // ✅ Return only array
+    return res.data?.data || [];
+  } catch (error) {
+    console.error("Get InActive Team Members Error:", error);
+    return [];
+  }
+};
+export const GetTeamMemberById = async (id: number) => {
+  try {
+    const res = await axiosInstance.get(
+      `${API_PATHS.TEAM.GETTEAMMEMBERBYID}/${id}`
+    );
+
+    return res.data;
+  } catch {
+    return { success: false };
   }
 };

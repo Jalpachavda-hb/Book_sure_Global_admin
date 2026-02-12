@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../../utils/Handlerfunctions/formSubmitHandlers";
@@ -20,7 +19,7 @@ function ThemeToggleButton({ closeDropdown }: { closeDropdown: () => void }) {
       onClick={handleToggle}
       className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 w-full"
     >
-      {theme === 'light' ? (
+      {theme === "light" ? (
         <svg
           className="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300"
           width="24"
@@ -28,7 +27,13 @@ function ThemeToggleButton({ closeDropdown }: { closeDropdown: () => void }) {
           viewBox="0 0 24 24"
           fill="none"
         >
-          <path d="M12 3V4M12 20V21M4 12H3M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5M17.6859 17.69L18.5 18.5M21 12H20M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path
+            d="M12 3V4M12 20V21M4 12H3M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5M17.6859 17.69L18.5 18.5M21 12H20M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       ) : (
         <svg
@@ -38,15 +43,18 @@ function ThemeToggleButton({ closeDropdown }: { closeDropdown: () => void }) {
           viewBox="0 0 24 24"
           fill="none"
         >
-          <path d="M21.0672 11.8568L20.4253 11.469L21.0672 11.8568ZM12.1432 2.93276L11.7553 2.29085V2.29085L12.1432 2.93276ZM21.25 12C21.25 17.1086 17.1086 21.25 12 21.25V22.75C17.9371 22.75 22.75 17.9371 22.75 12H21.25ZM12 21.25C6.89137 21.25 2.75 17.1086 2.75 12H1.25C1.25 17.9371 6.06294 22.75 12 22.75V21.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75V1.25C6.06294 1.25 1.25 6.06294 1.25 12H2.75ZM15.5 14.25C12.3244 14.25 9.75 11.6756 9.75 8.5H8.25C8.25 12.5041 11.4959 15.75 15.5 15.75V14.25ZM20.4253 11.469C19.4172 13.1373 17.5882 14.25 15.5 14.25V15.75C18.1349 15.75 20.4407 14.3439 21.7092 12.2447L20.4253 11.469ZM9.75 8.5C9.75 6.41182 10.8627 4.5828 12.531 3.57467L11.7553 2.29085C9.65609 3.5593 8.25 5.86509 8.25 8.5H9.75ZM12 2.75C11.9115 2.75 11.8077 2.71008 11.7324 2.63168C11.6686 2.56527 11.6538 2.50244 11.6503 2.47703C11.6461 2.44587 11.6482 2.35557 11.7553 2.29085L12.531 3.57467C13.0342 3.27065 13.196 2.71398 13.1368 2.27042C13.0754 1.81116 12.7166 1.25 12 1.25V2.75ZM21.7092 12.2447C21.6444 12.3518 21.5541 12.3539 21.523 12.3497C21.4976 12.3462 21.4347 12.3314 21.3683 12.2676C21.2899 12.1923 21.25 12.0885 21.25 12H22.75C22.75 11.2834 22.1888 10.9246 21.7296 10.8632C21.286 10.804 20.7294 10.9658 20.4253 11.469L21.7092 12.2447Z" fill="currentColor"/>
+          <path
+            d="M21.0672 11.8568L20.4253 11.469L21.0672 11.8568ZM12.1432 2.93276L11.7553 2.29085V2.29085L12.1432 2.93276ZM21.25 12C21.25 17.1086 17.1086 21.25 12 21.25V22.75C17.9371 22.75 22.75 17.9371 22.75 12H21.25ZM12 21.25C6.89137 21.25 2.75 17.1086 2.75 12H1.25C1.25 17.9371 6.06294 22.75 12 22.75V21.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75V1.25C6.06294 1.25 1.25 6.06294 1.25 12H2.75ZM15.5 14.25C12.3244 14.25 9.75 11.6756 9.75 8.5H8.25C8.25 12.5041 11.4959 15.75 15.5 15.75V14.25ZM20.4253 11.469C19.4172 13.1373 17.5882 14.25 15.5 14.25V15.75C18.1349 15.75 20.4407 14.3439 21.7092 12.2447L20.4253 11.469ZM9.75 8.5C9.75 6.41182 10.8627 4.5828 12.531 3.57467L11.7553 2.29085C9.65609 3.5593 8.25 5.86509 8.25 8.5H9.75ZM12 2.75C11.9115 2.75 11.8077 2.71008 11.7324 2.63168C11.6686 2.56527 11.6538 2.50244 11.6503 2.47703C11.6461 2.44587 11.6482 2.35557 11.7553 2.29085L12.531 3.57467C13.0342 3.27065 13.196 2.71398 13.1368 2.27042C13.0754 1.81116 12.7166 1.25 12 1.25V2.75ZM21.7092 12.2447C21.6444 12.3518 21.5541 12.3539 21.523 12.3497C21.4976 12.3462 21.4347 12.3314 21.3683 12.2676C21.2899 12.1923 21.25 12.0885 21.25 12H22.75C22.75 11.2834 22.1888 10.9246 21.7296 10.8632C21.286 10.804 20.7294 10.9658 20.4253 11.469L21.7092 12.2447Z"
+            fill="currentColor"
+          />
         </svg>
       )}
-      {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+      {theme === "light" ? "Dark Mode" : "Light Mode"}
     </button>
   );
 }
 
-export default function aUserDropdown() {
+export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   function toggleDropdown() {
@@ -59,7 +67,7 @@ export default function aUserDropdown() {
   useEffect(() => {
     fetchProfile()
       .then((data) => {
-        setFormData({ ...data }); // data already has admin_id
+        setFormData({ ...data });
       })
       .catch((err) => console.error("Error fetching profile:", err));
   }, []);
@@ -71,16 +79,17 @@ export default function aUserDropdown() {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
+        className="flex items-center text-white dropdown-toggle dark:text-gray-400"
       >
         <span className="mr-3 overflow-hidden rounded-full h-15 w-15">
-          <img src="/images/user/owner.jpg" alt="User" />
+          <img src="/images/user/owner.png" alt="User" />
         </span>
 
         <span className="block mr-1 font-medium text-theme-sm">
           {" "}
-          {formData.name
-          // ?.split(" ")[0]
+          {
+            formData.name
+            // ?.split(" ")[0]
           }
         </span>
         <svg
@@ -143,7 +152,7 @@ export default function aUserDropdown() {
           <li>
             <ThemeToggleButton closeDropdown={closeDropdown} />
           </li>
-          <li className="md:hidden">
+          {/* <li className="md:hidden">
             <a
               href="https://sarjanhomes.in/"
               target="_blank"
@@ -158,11 +167,11 @@ export default function aUserDropdown() {
                 viewBox="0 0 24 24"
                 fill="none"
               >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
               </svg>
               View Website
             </a>
-          </li>
+          </li> */}
         </ul>
         <button
           onClick={() => handleLogout(navigate)}

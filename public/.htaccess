@@ -1,17 +1,12 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
-  
-  # Fix MIME types
-  <FilesMatch "\.(js|mjs|ts|tsx|jsx)$">
-    Header set Content-Type "application/javascript"
-  </FilesMatch>
-  
-  # Serve existing files
+  RewriteBase /admin/
+
+  # If file or folder exists, serve normally
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule . - [L]
-  
-  # Client-side routing
-  RewriteRule . /index.html [L]
+  RewriteRule ^ - [L]
+
+  # Otherwise redirect everything to index.html
+  RewriteRule ^ index.html [L]
 </IfModule>

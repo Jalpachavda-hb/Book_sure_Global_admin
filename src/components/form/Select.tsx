@@ -1,72 +1,7 @@
 
 
-// // import { useState } from "react";
 
-// // interface Option {
-// //   value: string;
-// //   label: string;
-// // }
-
-// // interface SelectProps {
-// //   options?: Option[];   // make it optional
-// //   placeholder?: string;
-// //   onChange: (value: string) => void;
-// //   className?: string;
-// //   defaultValue?: string;
-// // }
-
-// // const Select: React.FC<SelectProps> = ({
-// //   options = [], // default empty array
-// //   placeholder = "Select an option",
-// //   onChange,
-// //   className = "",
-// //   defaultValue = "",
-// // }) => {
-// //   const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
-
-// //   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-// //     const value = e.target.value;
-// //     setSelectedValue(value);
-// //     onChange(value);
-// //   };
-
-// //   return (
-// //     <select
-// //       className={`h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-11 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 ${
-// //         selectedValue
-// //           ? "text-gray-800 dark:text-white/90"
-// //           : "text-gray-400 dark:text-gray-400"
-// //       } ${className}`}
-// //       value={selectedValue}
-// //       onChange={handleChange}
-// //     >
-// //       <option
-// //         value=""
-// //         disabled
-// //         className="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-// //       >
-// //         {placeholder}
-// //       </option>
-
-// //       {options.map((option) => (
-// //         <option
-// //           key={option.value}
-// //           value={option.value}
-// //           className="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
-// //         >
-// //           {option.label}
-// //         </option>
-// //       ))}
-// //     </select>
-// //   );
-// // };
-
-// // export default Select;
-
-
-
-
-// import { useState } from "react";
+// import { useState, useEffect } from "react";
 
 // interface Option {
 //   value: string;
@@ -79,9 +14,10 @@
 //   onChange: (value: string) => void;
 //   className?: string;
 //   defaultValue?: string;
+//   value?: string; // ✅ add controlled value support
 //   label?: string;
 //   required?: boolean;
-//   error?: string; // <-- add error prop
+//   error?: string;
 // }
 
 // const Select: React.FC<SelectProps> = ({
@@ -90,16 +26,24 @@
 //   onChange,
 //   className = "",
 //   defaultValue = "",
+//   value,
 //   label,
 //   required = false,
 //   error,
 // }) => {
 //   const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
 
+//   // ✅ Keep in sync when parent passes value (e.g. edit mode)
+//   useEffect(() => {
+//     if (value !== undefined) {
+//       setSelectedValue(value);
+//     }
+//   }, [value]);
+
 //   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-//     const value = e.target.value;
-//     setSelectedValue(value);
-//     onChange(value);
+//     const newValue = e.target.value;
+//     setSelectedValue(newValue);
+//     onChange(newValue);
 //   };
 
 //   return (
@@ -136,7 +80,7 @@
 // export default Select;
 
 
-import { useState, useEffect } from "react";
+import React from "react";
 
 interface Option {
   value: string;
@@ -148,8 +92,7 @@ interface SelectProps {
   placeholder?: string;
   onChange: (value: string) => void;
   className?: string;
-  defaultValue?: string;
-  value?: string; // ✅ add controlled value support
+  value: string; 
   label?: string;
   required?: boolean;
   error?: string;
@@ -160,25 +103,13 @@ const Select: React.FC<SelectProps> = ({
   placeholder = "Select an option",
   onChange,
   className = "",
-  defaultValue = "",
   value,
   label,
   required = false,
   error,
 }) => {
-  const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
-
-  // ✅ Keep in sync when parent passes value (e.g. edit mode)
-  useEffect(() => {
-    if (value !== undefined) {
-      setSelectedValue(value);
-    }
-  }, [value]);
-
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newValue = e.target.value;
-    setSelectedValue(newValue);
-    onChange(newValue);
+    onChange(e.target.value);
   };
 
   return (
@@ -190,16 +121,14 @@ const Select: React.FC<SelectProps> = ({
       )}
 
       <select
-        className={`h-11 w-full appearance-none rounded-lg border px-4 py-2.5 pr-11 text-sm shadow-theme-xs 
-        placeholder:text-gray-400 focus:outline-hidden focus:ring-2 
-        ${error ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-brand-500/10 focus:border-brand-300"}
-        dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 ${className}`}
-        value={selectedValue}
+        value={value}
         onChange={handleChange}
+        className={`h-11 w-full rounded-lg border px-4 py-2.5 text-sm 
+        ${error ? "border-red-500" : "border-gray-300"}
+        dark:border-gray-700 dark:bg-gray-900 dark:text-white ${className}`}
       >
-        <option value="" disabled>
-          {placeholder}
-        </option>
+        <option value="">{placeholder}</option>
+
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

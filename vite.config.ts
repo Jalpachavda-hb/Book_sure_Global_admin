@@ -23,7 +23,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
-  base: "/", // ← CHANGE THIS TO ROOT
+  base: "/admin", 
   plugins: [
     react(),
     svgr({

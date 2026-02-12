@@ -1,365 +1,674 @@
 import axiosInstance from "../axiosinstance";
 import { toast } from "react-toastify";
 import { API_PATHS } from "../apiPaths";
-import { getAdminId } from "./getdata";
+
+// ===========book sure glbal==========================
+
+export const updateherosection = async (data: {
+  title: string;
+  subtitle: string;
+  button_text: string;
+  button_link: string;
+  background_image?: File | null;
+}) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("subtitle", data.subtitle);
+    formData.append("button_text", data.button_text);
+    formData.append("button_link", data.button_link);
+
+    if (data.background_image instanceof File) {
+      formData.append("background_image", data.background_image);
+    }
+
+    const response = await axiosInstance.post(
+      API_PATHS.HEROSECTION.UPDATEHEROSECTION,
+      formData,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating hero:", error);
+    throw error;
+  }
+};
+
+export const updateWebSetting = async (
+  groupName: string,
+  logoFile: File | null,
+  faviconFile: File | null,
+) => {
+  const formData = new FormData();
+
+  formData.append("WebTitle", groupName);
+
+  if (logoFile) formData.append("logo", logoFile);
+  if (faviconFile) formData.append("favicon", faviconFile);
+
+  const res = await axiosInstance.post(
+    API_PATHS.WEBSETTINGBOOK.UPDATEWEBSETTING,
+    formData,
+  );
+
+  return res.data;
+};
+
+export const updateHomeAbout = async (
+  toptitle: string,
+  title: string,
+  aboutcontent: string,
+  year_experience: number,
+  mainimage: File | null,
+  secondimage: File | null,
+) => {
+  const formData = new FormData();
+
+  formData.append("toptitle", toptitle);
+  formData.append("title", title);
+  formData.append("aboutcontent", aboutcontent);
+  formData.append("year_experience", String(year_experience));
+
+  if (mainimage) formData.append("mainimage", mainimage);
+  if (secondimage) formData.append("secondimage", secondimage);
+
+  const res = await axiosInstance.post(
+    API_PATHS.HOMEABOUTSECTION.UPDATEHOMEABOUT,
+    formData,
+  );
+
+  return res.data;
+};
+
+export const updateHelp = async (
+  maintitle: string,
+  title: string,
+  helpcontent: string,
+  mainimage: File | null,
+) => {
+  const formData = new FormData();
+
+  formData.append("maintitle", maintitle);
+  formData.append("title", title);
+  formData.append("helpcontent", helpcontent);
+
+  if (mainimage) formData.append("mainimage", mainimage);
+
+  const res = await axiosInstance.post(API_PATHS.HELP.UPDATEHELP, formData);
+
+  return res.data;
+};
+
+// export const updateWhychooseus = async (
+//   section_title: string,
+//   section_subtitle: string,
+//   content_title: string,
+//   content_para: string,
+//   experience_years: number,
+//   button_text: string,
+//   button_link: string,
+//   cards: SpecialityField[],
+//   features: string[],
+//   whychosseus_image: File | null,
+// ) => {
+//   const formData = new FormData();
+
+//   formData.append("section_title", section_title);
+//   formData.append("section_subtitle", section_subtitle);
+//   formData.append("content_title", content_title);
+//   formData.append("content_para", content_para);
+//   formData.append("experience_years", String(experience_years));
+//   formData.append("button_text", button_text);
+//   formData.append("button_link", button_link);
+
+//   formData.append("cards", JSON.stringify(cards));
+//   formData.append("features", JSON.stringify(features));
+
+//   if (whychosseus_image) {
+//     formData.append("whychosseus_image", whychosseus_image);
+//   }
+
+//   const res = await axiosInstance.post(
+//     API_PATHS.WHYCHOSSEUS.UPDATEWHYCHOSSEUS,
+//     formData,
+//   );
+
+//   return res.data;
+// };
 
 export const handleUpdateProfile = async (
   formData: {
     admin_id: string;
     name: string;
     email: string;
-    contact_no: string;
+    contact_number: string;
     password?: string;
   },
-  onSuccess: () => void
+  onSuccess: () => void,
+) => {
+  const payload = {
+    name: formData.name,
+    email: formData.email,
+    contact_number: formData.contact_number,
+    ...(formData.password ? { password: formData.password } : {}),
+  };
+
+  const { data } = await axiosInstance.post(
+    `${API_PATHS.ADMINAUTH.UPDATE_PROFIL}/${formData.admin_id}`,
+    payload,
+  );
+
+  if (data.success) {
+    toast.success(data.message);
+    onSuccess();
+  } else {
+    toast.error(data.message);
+  }
+};
+
+export const updateSoftwareStatus = async (
+  id: number,
+  isActive: 0 | 1,
+  onSuccess: () => void,
 ) => {
   try {
-    // Using the admin_id from formData directly
-    const payload = {
-      admin_id: formData.admin_id,
-      name: formData.name,
-      email: formData.email,
-      contact: formData.contact_no,
-      ...(formData.password ? { password: formData.password } : {}),
-    };
-
-    const { data } = await axiosInstance.post(
-      API_PATHS.ADMINAUTH.UPDATE_PROFIL,
-      payload
+    const res = await axiosInstance.put(
+      `${API_PATHS.SOFTWARE.UPDATESTATUSBYID}/${id}`,
+      { isActive },
     );
 
-    if (data.status === 200) {
-      toast.success(data.message);
-      onSuccess(); // refresh UI
+    if (res.data.success) {
+      toast.success(res.data.message);
+      onSuccess();
     } else {
-      toast.error(data.message || "Something went wrong");
+      toast.error(res.data.message);
     }
-  } catch (error: any) {
-    toast.error(error.response?.data?.message || "Error updating profile");
+  } catch (error) {
+    console.error("Error updating software status:", error);
+    toast.error("Status update failed");
   }
 };
 
-export const updateWebSetting = async (
-  adminId: string | null,
-  Group_name: string,
-  logoFile: File | null,
-  faviconFile: File | null
-) => {
-  if (!adminId) {
-    toast.error("Admin ID is missing");
-    throw new Error("Admin ID is required");
-  }
-
-  const formData = new FormData();
-  formData.append("Group_name", Group_name);
-  formData.append("admin_id", adminId);
-
-  if (logoFile) formData.append("logo", logoFile);
-  if (faviconFile) formData.append("favicon", faviconFile);
-
+export const updateTestimonial = async (id: number, data: any) => {
   try {
-    const res = await axiosInstance.post(
-      API_PATHS.WEBSETTING.UPDATEWEBSETTING,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
+    const res = await axiosInstance.put(
+      `${API_PATHS.TESTIMONIAL.EDITTESTIMONIAL}/${id}`,
+      data,
     );
 
-    toast.success("Web Setting updated successfully");
-    return res.data;
-  } catch (err: any) {
-    console.error("Update WebSetting error:", err);
-    toast.error("Failed to update Web Setting");
-    throw err;
+    if (res.data.success) {
+      toast.success(res.data.message);
+      return true;
+    }
+
+    toast.error(res.data.message);
+    return false;
+  } catch (error) {
+    toast.error("Update Failed ❌");
+    return false;
   }
 };
-
-// edit projecttype
-
-export const editProjectType = async (
-  admin_id: string,
-  id: string,
-  project_type_name: string
+export const updateTestimonialStatus = async (
+  id: number,
+  Is_Active: 0 | 1,
+  refresh: () => void,
 ) => {
   try {
-    const formData = new FormData();
-    formData.append("admin_id", admin_id);
-    formData.append("id", id);
-    formData.append("project_type_name", project_type_name);
+    const res = await axiosInstance.put(
+      `${API_PATHS.TESTIMONIAL.UPDATESTATUSBYID}/${id}`,
+      { Is_Active }, // ✅ correct key
+    );
 
-    const response = await axiosInstance.post("/editProjectType", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    return response.data; // { status, message, data }
+    if (res.data.success) {
+      toast.success(res.data.message);
+      refresh();
+    } else {
+      toast.error(res.data.message);
+    }
   } catch (error) {
-    console.error("Error editing project type:", error);
-    throw error;
+    toast.error("Status update failed ❌");
   }
 };
 
-export const editProjectCategory = async (formData: FormData) => {
+export const updatecompanyhighlight = async (
+  id: number,
+  formData: FormData,
+) => {
   try {
-    const response = await axiosInstance.post(
-      API_PATHS.PROJECTCATEGORY.EDITPROJECTCATEGORY,
+    const res = await axiosInstance.put(
+      `${API_PATHS.COMPANYHIGHLIGHT.EDITCOMPANYHIGHTLIGHT}/${id}`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
 
-    return response.data;
-  } catch (error) {
-    console.error("Error editing project category:", error);
-    throw error;
-  }
-};
+    return res.data;
+  } catch (error: any) {
+    console.error("Update Highlight Error:", error);
 
-export const updatePropertyDetails = async (
-  block_detail_id: number,
-  formData: any
-) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found. Please login again.");
-    return null;
-  }
-
-  try {
-    const payload = {
-      block_detail_id, // which block to update
-      site_detail_id: formData.site_detail_id,
-      block: formData.block,
-      block_number: formData.block_number,
-      rera_area: formData.rera_area,
-      balcony_area: formData.balcony_area,
-      wash_area: formData.wash_area,
-      terrace_area: formData.terrace_area,
-      undivided_landshare: formData.undivided_landshare,
-      north: formData.north,
-      south: formData.south,
-      east: formData.east,
-      west: formData.west,
+    return {
+      success: false,
+      message:
+        error.response?.data?.message || "Failed to update company highlight",
     };
+  }
+};
 
-    // Pass admin_id in URL as query param
-    const res = await axiosInstance.post(
-      `${API_PATHS.SITEDETAILS.EDITPROPERTYDETAILS}?admin_id=${adminId}`,
-      payload
+export const updateFaqStatus = async (
+  id: number,
+  is_active: 0 | 1,
+  refresh: () => void,
+) => {
+  try {
+    const res = await axiosInstance.patch(
+      `${API_PATHS.CONTACT.UPDATEFAQSTATUAS}/${id}/status`,
+      { is_active },
     );
 
-    if (res.data.status === 200) {
-      // toast.success("Property Detail updated successfully!");
-      return res.data;
+    if (res.data?.success) {
+      toast.success(res.data.message || "Status Updated ✅");
+      refresh();
     } else {
-      toast.error(res.data.message || "Failed to update Property Detail");
-      return null;
+      toast.error(res.data.message || "Update Failed ❌");
     }
   } catch (error: any) {
-    console.error("Error while updating Property Detail:", error);
-    toast.error(error.response?.data?.message || "Something went wrong");
-    return null;
+    toast.error(error.response?.data?.message || "Status update failed ❌");
   }
 };
-
-export const updateAdminUser = async (
-  id: string,
-  name: string,
-  email: string,
-  contact: string,
-  site_detail_id: number,
-  role_id: number,
-  password: string,
-  permissions: { [feature: string]: string[] },
-  clients: string[] = []
+export const updateEmailStatus = async (
+  id: number,
+  is_active: 0 | 1,
+  refresh: () => void,
 ) => {
-  const adminId = getAdminId();
-  if (!adminId) {
-    toast.error("Admin ID not found. Please login again.");
-    return null;
-  }
-
   try {
-    const formData = new FormData();
-    // formData.append("admin_id", adminId);
-    formData.append("admin_user_id", id);
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("contact", contact);
-    formData.append("site_detail_id", String(site_detail_id));
-    formData.append("role_id", String(role_id));
-    if (password && password !== "") {
-      formData.append("password", password);
-    }
-
-    // ✅ Clients
-    clients.forEach((c) => formData.append("clients[]", c));
-
-    // ✅ Permissions - same handling as addAdminUser
-    Object.entries(permissions).forEach(([feature, values]) => {
-      const lowercaseFeature = feature.toLowerCase(); // convert to lowercase
-      if (Array.isArray(values) && values.length > 0) {
-        values.forEach((val) => {
-          formData.append(`${lowercaseFeature}[]`, val);
-        });
-      } else {
-        // Send empty array if no permissions selected
-        formData.append(`${lowercaseFeature}[]`, "");
-      }
-    });
-
-    // Debugging – log what's being sent
-    for (let [k, v] of formData.entries()) {
-      console.log(k, v);
-    }
-
-    const res = await axiosInstance.post(
-      API_PATHS.ADMINUSERAPI.UPDATEADMINUSER,
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
+    const res = await axiosInstance.patch(
+      `${API_PATHS.CONTACT.UPDATEEMAILSTATUS}/${id}`,
+      { is_active },
     );
 
-    if (res.data.status === 200) {
-      toast.success("Admin user updated successfully!");
-      return res.data;
+    if (res.data?.success) {
+      toast.success(res.data.message || "delet ");
+      refresh();
     } else {
-      toast.error(res.data.message || "Failed to update admin user");
-      return null;
+      toast.error(res.data.message || "Update Failed ❌");
     }
   } catch (error: any) {
-    console.error("Error while updating admin user:", error);
-    toast.error(error.response?.data?.message || "Something went wrong");
-    return null;
+    toast.error(error.response?.data?.message || "Status update failed ❌");
   }
 };
 
-export const editPaymentfromAdmin = async (
-  admin_id: string,
-  id: string,
-  received_amount_type: string,
-  received_amount: number,
-  received_payment_date: string,
-  receipt: File | null // only File or null
-) => {
+export const updateContactpageinfo = async (id: number, form: any) => {
   try {
-    const formData = new FormData();
-    formData.append("admin_id", admin_id);
-    formData.append("id", id);
-    formData.append("received_amount_type", received_amount_type);
-    formData.append("received_amount", received_amount.toString());
-    formData.append("received_payment_date", received_payment_date);
-
-    // ✅ Only attach if a new file is selected
-    if (receipt) {
-      formData.append("receipt", receipt);
-    }
-
-    const response = await axiosInstance.post(
-      API_PATHS.PAYMENT.EDITPAYMENTFROMADMIN,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
+    const res = await axiosInstance.put(
+      `${API_PATHS.CONTACT.UPDATECONTACTPAGEINFO}/${id}`,
+      form,
     );
 
-    return response.data; // { status, message, data }
-  } catch (error) {
-    console.error("Error editing payment:", error);
-    throw error;
+    return res.data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message:
+        error.response?.data?.message || "Failed to update contact page info",
+    };
   }
 };
+export interface AboutForm {
+  subtitle: string;
+  title: string;
+  description: string;
+  experience_list: string[];
+  main_image_file: File | null;
+  main_image: string;
+}
 
-export const editClient = async (
-  clientData: any,
-
-  aadharCard: File | null,
-  panCard: File | null
-) => {
+export const updateAboutSection = async (id: number, form: AboutForm) => {
   try {
     const formData = new FormData();
 
-    // ✅ Map to exact field names expected by backend
-    formData.append("admin_id", clientData.admin_id);
-    formData.append("clientid", clientData.clientid);
-    formData.append("site_detail_id", clientData.site_detail_id || "");
-    formData.append("client_name", clientData.name || "");
-    formData.append("edit_email", clientData.email || "");
-    formData.append("edit_contact", clientData.contact || "");
-    formData.append("edit_address", clientData.address || "");
-    formData.append("update_password", clientData.password || "");
-    formData.append(
-      "client_milestone_id",
-      clientData.client_milestone_id || ""
-    );
-    formData.append("edit_unit_type_option", clientData.unit_type || "");
-    formData.append("edit_property_amount", clientData.property_amount || "");
-    formData.append("edit_gst_slab", clientData.gst_slab || "");
-    formData.append("edit_gst_amount", clientData.gst_amount || "");
-    formData.append("edit_total_amount", clientData.total_amount || "");
+    /* ✅ Append Text Fields */
+    formData.append("subtitle", form.subtitle);
+    formData.append("title", form.title);
+    formData.append("description", form.description);
 
-    // ✅ Handle Aadhar Card: new file, remove, or keep existing
-    if (aadharCard instanceof File) {
-      // New file selected
-      formData.append("edit_aadhar_card", aadharCard);
-    } else if (aadharCard === null && clientData.aadhar_card) {
-      // Remove existing file - send null or empty string
-      formData.append("edit_aadhar_card", "");
+    /* ✅ Append Experience List */
+    formData.append("experience_list", JSON.stringify(form.experience_list));
+
+    /* ✅ Append Image Only If Selected */
+    if (form.main_image_file) {
+      formData.append("main_image", form.main_image_file);
     }
-    // If aadharCard is undefined, don't send anything (keep existing)
 
-    // ✅ Handle PAN Card: new file, remove, or keep existing
-    if (panCard instanceof File) {
-      // New file selected
-      formData.append("edit_pan_card", panCard);
-    } else if (panCard === null && clientData.pan_card) {
-      // Remove existing file - send null or empty string
-      formData.append("edit_pan_card", "");
-    }
-    // If panCard is undefined, don't send anything (keep existing)
-
-    const response = await axiosInstance.post(
-      API_PATHS.CLIENTDATA.UPDATECLIENTDATA,
+    /* ✅ API Call Always Runs */
+    const res = await axiosInstance.put(
+      `${API_PATHS.ABOUTMAIN.UPDATEABOUTMAIN}/${id}`,
       formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
     );
 
-    return response.data;
-  } catch (error) {
-    console.error("Error editing client:", error);
-    throw error;
+    return res.data;
+  } catch (error: any) {
+    console.error("Update About Error:", error);
+
+    return {
+      success: false,
+      message:
+        error.response?.data?.message || "Failed to update About Section ❌",
+    };
+  }
+};
+export const updateFounder = async (
+  id: number,
+  form: any,
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const formData = new FormData();
+
+    formData.append("name", form.name);
+    formData.append("designation", form.designation);
+    formData.append("description", form.description);
+
+    if (form.image_file) {
+      formData.append("image", form.image_file);
+    }
+
+    const res = await axiosInstance.put(`/update/${id}`, formData);
+
+    // ✅ Return only backend response data
+    return res.data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Update failed ❌",
+    };
   }
 };
 
-export const editSiteData = async (id: string, formData: FormData) => {
+export const updateourassociateStatus = async (
+  id: number,
+  status: 0 | 1,
+  refresh: () => void,
+) => {
   try {
-    const adminId = getAdminId();
-    if (!adminId) {
-      toast.error("Admin ID not found. Please login again.");
-      return null;
-    }
-
-    // ✅ append ids to formData
-    formData.append("admin_id", adminId);
-    formData.append("site_id", id);
-
-    const response = await axiosInstance.post(
-      API_PATHS.SITEDETAILS.EDITSITEDETAILS,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
+    const res = await axiosInstance.put(
+      `${API_PATHS.OURASSOCIATE.UPDATESTATUS}/${id}`,
+      { status },
     );
 
-    return response;
+    if (res.data.success) {
+      toast.success("Status Updated ✅");
+      refresh();
+    }
   } catch (error) {
-    console.error("Error editing site:", error);
-    throw error;
+    toast.error("Status Failed ❌");
+  }
+};
+
+export const updateWhyChooseUs = async (
+  id: number,
+  sectionTitle: string,
+  sectionSubtitle: string,
+  contentTitle: string,
+  contentPara: string,
+  specialityList: any[],
+  imageFile: File | null,
+) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("section_title", sectionTitle);
+    formData.append("section_subtitle", sectionSubtitle);
+    formData.append("content_title", contentTitle);
+    formData.append("content_para", contentPara);
+
+    /* ✅ Send array of objects */
+    formData.append("speciality_list", JSON.stringify(specialityList));
+
+    /* ✅ Optional Image */
+    if (imageFile) {
+      formData.append("whychosseus_image", imageFile);
+    }
+
+    /* ✅ Axios PUT Request */
+    const res = await axiosInstance.put(
+      `${API_PATHS.WHYCHOSSEUS.UPDATEWHYCHOSSEUS}/${id}`,
+      formData,
+    );
+
+    /* ✅ Axios returns data directly */
+    return res.data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Something went wrong ❌",
+    };
+  }
+};
+
+export const updateInqEmailStatus = async (
+  id: number,
+  is_active: 0 | 1,
+  refresh: () => void,
+) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.INQUIRY.UPDATEEMAILSTATUS}/${id}`,
+      { is_active },
+    );
+
+    if (res.data?.success) {
+      toast.success(res.data.message || "Email deleted successfully ✅");
+      refresh();
+    } else {
+      toast.error(res.data.message || "Delete Failed ❌");
+    }
+  } catch (error: any) {
+    toast.error(error.response?.data?.message || "Delete request failed ❌");
+  }
+};
+
+export interface SecurePoint {
+  title: string;
+  description: string;
+}
+
+export const updateDataSecurity = async (
+  sectionTag: string,
+  title: string,
+  description: string,
+  howWeKeepSecure: SecurePoint[],
+  mainImage: File | null,
+) => {
+  try {
+    const formData = new FormData();
+
+    /* ✅ Text Fields */
+    formData.append("section_tag", sectionTag);
+    formData.append("title", title);
+    formData.append("description", description);
+
+    /* ✅ JSON Array Field */
+    formData.append("how_we_keep_secure", JSON.stringify(howWeKeepSecure));
+
+    /* ✅ Optional Image */
+    if (mainImage) {
+      formData.append("main_image", mainImage);
+    }
+
+    /* ✅ PUT Request */
+    const res = await axiosInstance.put(
+      API_PATHS.DATASEQURITY.UPDATEDATASECTION,
+      formData,
+    );
+
+    return res.data;
+  } catch (error: any) {
+    console.error("Update Data Security Error:", error);
+
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Update Failed ❌",
+    };
+  }
+};
+
+export const updatePricingModelStatus = async (
+  id: number,
+  is_active: number,
+) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.PRICINGMODEL.UPDATEPRICINGMODELSTATUS}/${id}`,
+      { is_active },
+    );
+
+    return res.data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Status Update Failed ❌",
+    };
+  }
+};
+
+export const updatePricingmodel = async (
+  id: number,
+  data: {
+    title: string;
+    price: number;
+    short_description: string;
+    features: string[];
+  },
+) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.PRICINGMODEL.UPDATEPRICINGMODELBYID}/${id}`,
+      data,
+    );
+
+    return res.data;
+  } catch (error: any) {
+    console.error("Update Pricing Model Error:", error);
+
+    return {
+      success: false,
+      message:
+        error.response?.data?.message || "Failed to update Pricing Model ❌",
+    };
+  }
+};
+export const updateServicesStatus = async (id: number, is_active: number) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.SERVICES.UPDATESERVICESSTATUS}/${id}`,
+      { is_active },
+    );
+
+    return res.data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Status Update Failed ❌",
+    };
+  }
+};
+
+export const updateSerivec = async (id: number, data: any) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.SERVICES.UPDATESERIVES}/${id}`,
+      data,
+    );
+
+    if (res.data.success) {
+      toast.success(res.data.message);
+      return true;
+    }
+
+    toast.error(res.data.message);
+    return false;
+  } catch (error) {
+    toast.error("Update Failed ❌");
+    return false;
+  }
+};
+
+export const updatesubSerivec = async (id: number, data: FormData) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.SUBSERVICES.EDITSUBSERVICEBYID}/${id}`,
+      data,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
+
+    toast.success(res.data.message);
+    return true;
+  } catch {
+    toast.error("Update Failed ❌");
+    return false;
+  }
+};
+export const updatesubServicesStatus = async (
+  id: number,
+  is_active: number,
+) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.SUBSERVICES.UPDATESUBSERVICESSTATUS}/${id}`,
+      { is_active },
+    );
+
+    return res.data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Status Update Failed ❌",
+    };
+  }
+};
+
+export const updateTeamStatus = async (
+  id: number,
+  is_active: number
+) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.TEAM.UPDATETEAMMEMBERSTATUS}/${id}`,
+      { is_active }
+    );
+
+    return res.data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message:
+        error?.response?.data?.message ||
+        "Status Update Failed ❌",
+    };
+  }
+};
+
+
+export const EditTeam = async (id: number, data: any) => {
+  try {
+    const res = await axiosInstance.put(
+      `${API_PATHS.TEAM.UPDATETEAMMEMBERBYID}/${id}`,
+      data
+    );
+
+    return {
+      success: true,
+      message: res.data.message,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || "Update Failed ❌",
+    };
   }
 };

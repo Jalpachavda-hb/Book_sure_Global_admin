@@ -1,145 +1,11 @@
-export const BASE_URL = "https://sarjanhomes.in/api/";
-export const IMGURL = "https://sarjanhomes.in";
+// export const BASE_URL = "https://sarjanhomes.in/api/";
+// export const IMGURL = "https://sarjanhomes.in";
 
-// export const BASE_URL = "http://192.168.29.2:8000/api/";
-// export const IMGURL = "http://192.168.29.2:8000/";
+export const BASE_URL = "http://localhost:8000/api/";
+export const IMGURL = "http://localhost:8000";
 
 export const API_PATHS = {
   // PENDINGFORAPPROVALS
-
-  DASHBOARD: {
-    TODAYRECEIVEDPAYMENT: "todayReceivedPayment",
-
-    DASHBOARDCOUNT: "dashboardCount",
-  },
-
-  PENDINGFORAPPROVALSTABLE: {
-    PENDINGFORAPPROVALS: "pendingForApprovals", //GET
-    APPROVALS: "approval", //POST
-    REJECT: "reject", //POST  "description": "id from pendingForApprovals api",
-  },
-
-  ADMINAUTH: {
-    ADMINLOGIN: "adminLogin", // POST
-
-    GET_PROFILE: "adminProfile", //GETF
-
-    UPDATE_PROFIL: "updateProfile", //PUT
-
-    ADMINROLEPERMISSION: "adminRolePermissions", //GET
-  },
-  //  PROJECT TYPE API
-
-  PROJECTTYPE: {
-    GETPROJECTTYPE: "showProjectTypeList", //GET
-    EDITPROJECTTYPE: "editProjectType", //POST
-
-    DELETEPROJECTTYPE: "deleteProjectType", //POST
-  },
-
-  // PROJECT CATEGORY API
-
-  PROJECTCATEGORY: {
-    GETPROJECTCATEGORY: "showProjectCategoryList", //GET
-
-    EDITPROJECTCATEGORY: "editProjectCategory", //POST
-
-    ADDPROJECTCATEGORY: "addProjectCategory", // POST
-
-    DELETPROJECTCATEGORY: "deleteProjectCategory", //POST
-  },
-
-  // SITE DETAILS API
-
-  SITEDETAILS: {
-    GETSITEDETAILS: "showSiteList", //GET
-    SITEDETAILSBYID: "showSiteDetails", // change url when use
-    ADDSITE: "addSite", //POST
-    EDITSITEDETAILS: "editSite", //POST
-    DELETESITE: "deleteSite", //POST
-    ADDPROPERTDETAILS: "addPropertyDetails", // POST
-    UPLOADBLOCKDETAILCVC: "uploadBlockDetailCsv",
-    PROPERTYDETAILSLIST: "propertyDetailsList", // change url when use GET
-    GETBLOCKDETAILS: "getBlockDetails", // GET change url when use
-    //"description": "propertyDetailsList from this api get block_detail_id"
-    EDITPROPERTYDETAILS: "editPropertyDetails", //POST
-    //   "description": "id that get in getBlockDetails",
-    DELETEPROPERTYDETAILS: "deletePropertyDetails", //POST
-  },
-
-  //    ADMIN USER API
-
-  ADMINUSERAPI: {
-    SHOWADMINUSER: "showAdminUsers", //GET
-    ADDADMINUSER: "addAdminUser", // POST
-    DELETEADMINUSER: "deleteAdminUser", // POST
-    GETADMINUSER: "getAdminUser", //GET
-    UPDATEADMINUSER: "updateAdminUser", //POST
-  },
-
-  //   CLIENT DETAILS
-  CLIENTDATA: {
-    GETCLIENTECOUNTOFSITE: "getClientCountofSite", //GET
-    SHOWCLIENTLIST: "showClientList", // GET
-    ADDCLIENT: "addClient", //POST
-    EDITCLIENT: "editClient", //GET //perrow =  "raw": "{{url}}editClient?admin_id=1&client_milestone_id=22",
-    UPDATECLIENTDATA: "updateClientData", //POST
-    DELETECLIENTDAT: "deleteClient", // POST
-    GETCLIENTPAYMENT: "getClientPayments", // GET {{url}}getClientPayments?client_id=Ev&site_id=3&block_id=196
-    ADDPAYMENTFROMCLIENT: "addPaymentFromClient", // CHECK POSTMAN COLLECTION FILE FOR SHOW ID AND GET ID FROM
-    DELETECLIENTPANCARD: "deleteClientPanCard",
-    DELETECLIENTADHARCARD: "deleteClientAdharCard",
-  },
-
-  //  DOCUMENT API
-
-  COMMONDOCUMENTS: {
-    ADDCOMMUNDOCUMENT: "addCommonDocuments", //POST
-    SHOWCOMMUNDOCUMENT: "showCommonDocuments", // "raw": "{{url}}showCommonDocuments?admin_id=13",
-    DELETECOMMONDOCUMENTS: "deleteCommonDocuments",
-  },
-  PERSONALDOCUMENT: {
-    GETPERSONALDOCUMENT: "showPersonalDocuments", //GET
-    ADDPERSONALDOCUMENT: "addPersonalDocuments", //POST
-    DELETEPersonalDocuments: "deletePersonalDocuments",
-  },
-
-  // REPORT
-  SITEREPORT: {
-    SHOWSITEREPORT: "showSiteReports", //              "raw": "{{url}}showSiteReports?admin_id=1&site_id=",
-    //              "raw": "{{url}}getClientReportSummary?siteFilter=1",
-  },
-  CLIENTREPORT: {
-    VIEWLEDGER: " viewLedger", //"raw": "{{url}}viewLedger?clientid&block_detail_id",
-    SHOWCLIENTREPORT: "showClientReports", //raw": "{{url}}getClientReportSummary?siteFilter=1",
-    SHOWCLIENTREPORTSUMMERY: "getClientReportSummary",
-  },
-
-  // PAYMENT
-  PAYMENT: {
-    SHOWPAYMENTDETAILS: "showPaymentDetails", //GET "raw": "{{url}}showPaymentDetails?admin_id&searchByDays&startDate&endDate",
-    GETBLOCKDETAILSFROMSITE: "getBlockDetailsFromSite_Id", // "raw": "{{url}}getBlockDetailsFromSite_Id?site_id=1",
-    DESTROYPAYMENTRECEIPT: "destroyPaymentReceipt", //POST
-    DESTROYPAYMENTDETAILS: "destroyPaymentDetails", //POST
-    EDITPAYMENTFROMADMIN: "editPaymentFromAdmin", //POST
-  },
-
-  // TICKET
-
-  TICKET: {
-    SHOWADMINTICKET: "showAdminTicket",
-    SHOWCLIENTTICKET: "showClientTicket", //"raw": "{{url}}showClientTicket?admin_id=1",
-    ADDADMINTICKET: "addAdminTicket", //POST
-    SHOWTICKETGISTORY: "showTicketHistory",
-    GETTICKETMESSAGES: "getTicketMessages", //    "raw": "{{url}}getTicketMessages?admin_id=1&ticket_id=14",
-    REPLAYTOTICKET: "replyToTicket", //POST
-    CLOSETICKET: "closeTicket", //POST
-  },
-
-  // USERLOG API
-  USERLOG: {
-    GETUSERADMINLOG: "getAdminUserLogs", //"raw": "{{url}}getAdminUserLogs?page=2",
-  },
 
   // WEBSETTING
 
@@ -163,26 +29,151 @@ export const API_PATHS = {
     GETMAINABOUTUSSECTION: "masGet",
     UPDATEMAINABOUTUSSECTION: "masUpdate",
   },
-  APPSETTING: {
-    GETSPLASHSCREEN: "showsplashscreen", // showsplashscreen?admin_id=1" ,
-    DELETESPLASHSCREEN: "deletesplashscreen", //"raw": "{{url}}deletesplashscreen?admin_id=1&id=41",
-    INSERTSPLASHSCREEN: "insertsplashscreen", //GET
+
+  // book sure global////
+  HEROSECTION: {
+    GETHEROSECTION: "getHero",
+    UPDATEHEROSECTION: "updateHero",
+    GETDASHBOARDCOUNT : "getDashboardCardData"
   },
-  SITEINQUIRY: {
-    SHOWSITEINQUIRY: "showSiteInquiry",
-    INQUIRYTHROUGH: "inquiry_through",
+  HOMEABOUTSECTION: {
+    GETHOMEABOUT: "getAbout",
+    UPDATEHOMEABOUT: "updateHomeAbout",
+  },
+  HELP: {
+    GETHELPSECTION: "getHelp",
+    UPDATEHELP: "updateHomeHelp",
+  },
+  WHYCHOSSEUS: {
+    GETWHYCHOOSEUS: "getwhychooseus",
+    UPDATEWHYCHOSSEUS: "updatewhychooseus",
   },
 
-  MULTITIMEUSEAPI: {
-    GETBLOCKDETAILSFROMSITE_ID: "getBlockDetailsFromSite_Id", //          "raw": "{{url}}getBlockDetailsFromSite_Id?site_id=1",
-    SHOWCODESITELIST: "showdecodeSiteList", //  "raw": "{{url}}showdecodeSiteList?site_id",
-    GETBLOCKFROMSITEID: "getBlockFromSiteId", //"raw": "{{url}}getBlockFromSiteId?site_id=jR",
-    GETBLOCKNUMBERFROMBLOCK: "getBlockNumberFromBlock", //"raw": "{{url}}getBlockNumberFromBlock?block_id=k5",
-    GETADMINUSERROLE: "getAdminUserRoles", //"raw": "{{url}}getAdminUserRoles?admin_id=1",  this Api work for other admin login show delete permission
-    GETBLOCKFROMDECODESITEID: "getBlockFromDecodeSiteId",
-    GETCLIENTNAMEFROMBLOCKID: "getClientNameFromBlockId",
-    UNITTYPE: "unitType",
-    GETCLIENTNAMEFROMSITEID: "getClientNameFromSiteId",
-    GETSITEDATA: "getSiteData",
+  WEBSETTINGBOOK: {
+    GETWEBSETTING: "getwebdetail",
+    UPDATEWEBSETTING: "editwebsetting",
+  },
+
+  ADMINAUTH: {
+    ADMINLOGIN: "login",
+    GET_PROFILE: "getadminbyid",
+    UPDATE_PROFIL: "update-profile",
+    ADMINROLEPERMISSION: "adminRolePermissions",
+  },
+
+  SOFTWARE: {
+    GETSOFTWARE: "getSoftwareActive",
+    DELETESOFTWARE: "deleteSoftwareById",
+    INSERTSOFTWARE: "addSoftware",
+    GETINACTIVESOFTWARE: "getSoftwareInactive",
+    UPDATESTATUSBYID: "update-status",
+  },
+  //  GETSECTIONTITLE: "getSoftwareSectionMaster",
+  // UPDATETITLE: "updateSoftwareSection",
+
+  TESTIMONIAL: {
+    GETTESTIMONIAL: "getActiveTestimonials",
+    INSERTTESTIMONIAL: "addTestimonial",
+    GETINACTIVETESTIMONIAL: "getInActiveTestimonials",
+    UPDATESTATUSBYID: "updateTestimonialStatus",
+    GETTESTIMONIALBYID: "getTestimonialById",
+    EDITTESTIMONIAL: "editTestimonialById",
+    DELETETESTIMONIAL: "deleteTestimonial",
+  },
+
+  CONTACT: {
+    UPDATECONTACTPAGEINFO: "contact/contact-page",
+    GETCONTACTEMAIL: "contact/contact-emails",
+    ADDCONTACTEMAIL: "contact/contact-email",
+    ADDFAQ: "contact/contact-faq",
+
+    UPDATEEMAILSTATUS: "contact/contact-email/status",
+    UPDATEFAQSTATUAS: "contact/contact-faq",
+    GETCONTACTPAGEINFO: "contact/getContactPageInfo",
+    GETACTIVEFAQ: "contact/contact-faqs/active",
+    GETINACTIVEFAQ: "contact/contact-faqs/inactive",
+    DELETEEMAIL: "contact/contact-email/",
+    DELETEFAQ: "contact/contact-faq",
+    GETCONTACTMSG: "contact/contact-messages",
+  },
+
+  CAREERS: {
+    GETCAREERSMSG: "career/career-applications",
+  },
+
+  ABOUTMAIN: {
+    GETABOUTMAIN: "aboutmain/about",
+    UPDATEABOUTMAIN: "aboutmain/about",
+  },
+  COMPANYHIGHLIGHT: {
+    OURMISIION: "aboutmain/highlights",
+    EDITCOMPANYHIGHTLIGHT: "aboutmain/highlights",
+  },
+
+  OURASSOCIATE: {
+    ADDFOUNDER: "add",
+    GETBYID: "getbyid",
+    UPDATEBYID: "update",
+    UPDATESTATUS: "status",
+    DELETEFOUNDER: "delete",
+    GETACTIVEFOUNDER: "active",
+    GETINACTIVEFOUNDER: "inactive",
+  },
+
+  INQUIRY: {
+    GETPRICINGINQUIRY: "inq/getpricinginquiries",
+    GETINQUIRYEMAIL: "inq/pricing-inquiry-emails",
+    ADDINQUIRYEMAIL: "inq/pricing-inquiry-email",
+    EDITMAIL: "pricing-inquiry-email",
+    UPDATEEMAILSTATUS: "/inq/inquiry-email/status",
+  },
+
+  DATASEQURITY: {
+    GETDATASECTIONDATA: "data/data-security",
+    UPDATEDATASECTION: "data/update-data-security",
+  },
+
+  PRICINGMODEL: {
+    UPDATEPRICINGSECTION: "pricing/update",
+    UPDATEPRICINGMODELSTATUS: "pricing/pricing-model/status",
+    GETINACTIVEPRICINGMODELS: "pricing/inactive",
+    GETACTIVEPRICINGMODELS: "pricing/active",
+    DELETEPRICINGMODEL: "pricing/pricing-model",
+    ADDPRICINGMODEL: "pricing/pricing-model/add",
+    GETPRICINGMODELBYID: "pricing/pricing-model",
+    UPDATEPRICINGMODELBYID: "pricing/pricing-model",
+    GETPRICINGMODELTITLES: "pricing/gettitles",
+    GETPRICINGSECTION: "pricing/getpricingsection",
+  },
+
+  SERVICES: {
+    GETACTIVESERVICES: "/services/active",
+    GETINACTIVESERVICES: "/services/inactive",
+    UPDATESERVICESSTATUS: "/services/status",
+    ADDSERVICES: "/services",
+    GETBYID: "/services/getbyid",
+    UPDATESERIVES: "/updateservices",
+    DELETESERVICES: "/services",
+  },
+  SUBSERVICES: {
+    ADDSUBSERVICES: "/sub-services",
+    GETSERVICEBYSLUG: "/sub-services/by-slug",
+    EDITSUBSERVICEBYID: "/sub-services",
+    UPDATESUBSERVICESSTATUS: "/sub-services/status",
+    GETINACTIVESUBSERVICES: "/sub-services/inactive",
+    DELETESUBSERVICES: "/sub-services/delete",
+  },
+
+  TEAM: {
+    ADDTEAMMEMBER: "team/addmember",
+    DELETETEAMMEMBER: "team/member",
+    GETTEAMMEMBERS: "team/getmembers",
+    UPDATETEAMSECTION: "team/edittile",
+    GETTEAMSECTION: "team/gettitle",
+    GETACTIVETEAMMEMBERS: "team/members/active",
+    GETINACTIVETEAMMEMBERS: "team/members/inactive",
+    UPDATETEAMMEMBERSTATUS: "team/member/status",
+    UPDATETEAMMEMBERBYID: "team/editmember",
+    GETTEAMMEMBERBYID: "team/getmemberbyid",
   },
 };

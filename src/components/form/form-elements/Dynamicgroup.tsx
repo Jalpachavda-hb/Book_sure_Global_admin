@@ -12,33 +12,53 @@ export interface SpecialityField {
 interface Props {
   initialValues?: SpecialityField[];
   onChange?: (data: SpecialityField[]) => void;
+
+  /* ✅ Extra Props */
+  labelText?: string;
+  titlePlaceholder?: string;
+  descPlaceholder?: string;
 }
 
-const DynamicSpeciality = ({ initialValues = [], onChange }: Props) => {
+const DynamicSpeciality = ({
+  initialValues = [],
+  onChange,
+  labelText = "Add Speciality",
+  titlePlaceholder = "Enter Title",
+  descPlaceholder = "Enter Description",
+}: Props) => {
   const [fields, setFields] = useState<SpecialityField[]>([
     { title: "", description: "" },
   ]);
 
-  // Update state if initialValues change (important for edit mode)
+  /* ✅ Prefill values for edit */
   useEffect(() => {
     if (initialValues.length > 0) {
       setFields(initialValues);
     }
   }, [initialValues]);
 
+  /* ✅ Handle Change */
   const handleFieldChange = (
     index: number,
     key: keyof SpecialityField,
-    value: string
+    value: string,
   ) => {
-    const updated = [...fields];
-    updated[index][key] = value;
+    const updated = fields.map((item, i) =>
+      i === index ? { ...item, [key]: value } : item,
+    );
+
     setFields(updated);
     onChange?.(updated);
   };
 
-  const handleAddField = () =>
-    setFields([...fields, { title: "", description: "" }]);
+  /* ✅ Add Field */
+  const handleAddField = () => {
+    const updated = [...fields, { title: "", description: "" }];
+    setFields(updated);
+    onChange?.(updated);
+  };
+
+  /* ✅ Delete Field */
   const handleDeleteField = (index: number) => {
     const updated = fields.filter((_, i) => i !== index);
     setFields(updated);
@@ -46,51 +66,48 @@ const DynamicSpeciality = ({ initialValues = [], onChange }: Props) => {
   };
 
   return (
-    <div className="font-[Poppins] text-gray-600">
-      <Label className="mb-1 block">Add</Label>
+    <div className="font-[Poppins] text-gray-700">
+      <Label className="mb-2 block font-semibold">{labelText}</Label>
 
       {fields.map((field, index) => (
         <div
           key={index}
-          className="flex flex-col gap-2 mt-2 w-full border p-3 rounded-md"
+          className="border p-4 rounded-lg mt-3 space-y-3 bg-gray-50"
         >
-          {/* <Input
-            type="text"
-            value={field.icon}
-            onChange={(e) => handleFieldChange(index, "icon", e.target.value)}
-            placeholder="Enter Icon Name"
-            className="w-full"
-          /> */}
+          {/* ✅ Title */}
           <Input
-            type="text"
             value={field.title}
             onChange={(e) => handleFieldChange(index, "title", e.target.value)}
-            placeholder="Enter Title"
-            className="w-full"
+            placeholder={titlePlaceholder}
           />
+
+          {/* ✅ Description */}
+
           <TextArea
-            value={field.description}
+            value={field.description || ""}
             onChange={(value) => handleFieldChange(index, "description", value)}
-            placeholder="Enter Description"
-            className="w-full"
+            placeholder={descPlaceholder}
           />
-          <div className="flex gap-2">
+
+          {/* ✅ Buttons */}
+          <div className="flex gap-3">
             {index === fields.length - 1 && (
               <button
                 type="button"
                 onClick={handleAddField}
-                className="flex items-center gap-1 px-3 py-2 border rounded text-blue-600 hover:bg-blue-50 transition whitespace-nowrap"
+                className="flex items-center gap-2 px-4 py-2 rounded-md border text-blue-600 hover:bg-blue-50"
               >
-                <FiPlus /> Add
+                <FiPlus /> Add More
               </button>
             )}
+
             {fields.length > 1 && (
               <button
                 type="button"
                 onClick={() => handleDeleteField(index)}
-                className="px-3 py-2 border rounded text-red-500 hover:bg-red-50 transition"
+                className="flex items-center gap-2 px-4 py-2 rounded-md border text-red-500 hover:bg-red-50"
               >
-                <FiTrash2 />
+                <FiTrash2 /> Remove
               </button>
             )}
           </div>

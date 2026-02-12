@@ -5,15 +5,15 @@ import "swiper/swiper-bundle.css";
 import "flatpickr/dist/flatpickr.css";
 import App from "./App.tsx";
 // import { AppWrapper } from "./components/common/PageMeta.tsx";
-import { ThemeProvider } from "./context/ThemeContext.tsx";/////////
+import { ThemeProvider } from "./context/ThemeContext.tsx"; /////////
 import { useEffect } from "react";
 import { fetchWebSetting } from "./utils/Handlerfunctions/getdata.ts";
 import { BrowserRouter } from "react-router-dom";
-
+import { WebSettingsProvider } from "./context/WebSettingsContext.tsx";
 function WebSettingsUpdater() {
   useEffect(() => {
     fetchWebSetting().then((data) => {
-      if (data?.favicon) {
+      if (data?.Favicon) {
         let link: HTMLLinkElement | null =
           document.querySelector("link[rel~='icon']");
         if (!link) {
@@ -21,7 +21,7 @@ function WebSettingsUpdater() {
           link.rel = "icon";
           document.head.appendChild(link);
         }
-        link.href = data.favicon;
+        link.href = data.Favicon;
       }
 
       if (data?.title) {
@@ -37,13 +37,15 @@ createRoot(document.getElementById("root")!).render(
   <>
     {/* <StrictMode> */}
     <ThemeProvider>
-    {/* <AppWrapper> */}
-      <BrowserRouter>
+      {/* <AppWrapper> */}
+      <BrowserRouter >
         <WebSettingsUpdater />
-        <App />
+        <WebSettingsProvider>
+          <App />
+        </WebSettingsProvider>
       </BrowserRouter>
-    {/* </AppWrapper> */}
+      {/* </AppWrapper> */}
     </ThemeProvider>
     {/* </StrictMode>, */}
-  </>
+  </>,
 );

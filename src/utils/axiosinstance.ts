@@ -4,9 +4,7 @@ import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
-  // timeout: 60000,
   headers: {
-    "Content-Type": "application/json",
     Accept: "application/json",
   },
 });
@@ -14,29 +12,26 @@ const axiosInstance = axios.create({
 // Attach role if user exists
 axiosInstance.interceptors.request.use(
   (config) => {
-    const storedUser = sessionStorage.getItem("user");
+    // const storedUser = sessionStorage.getItem("user");
 
-    if (storedUser) {
-      try {
-        const userData = JSON.parse(storedUser);
-        if (userData?.role) {
-          config.headers["x-role-id"] = userData.role;
-        }
-      } catch (e) {
-        console.error("Failed to parse user from sessionStorage", e);
-        toast.error("Failed to retrieve user data. Please login again.");
-      }
-    }
+    // if (storedUser) {
+    //   try {
+    //     const userData = JSON.parse(storedUser);
+    //     if (userData?.role) {
+    //       config.headers["x-role-id"] = userData.role;
+    //     }
+    //   } catch (e) {
+    //     console.error("Failed to parse user", e);
+    //     toast.error("Please login again.");
+    //   }
+    // }
 
     return config;
   },
-  (error) => {
-    toast.error("Request setup error.");
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error),
 );
 
-// Global error handling
+// Global response handling
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -44,27 +39,17 @@ axiosInstance.interceptors.response.use(
       const status = error.response.status;
 
       if (status === 401) {
-        toast.error("Session expired. Redirecting to login...");
+        toast.error("Session expired");
         sessionStorage.clear();
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
-      } else if (status === 403) {
-        toast.error("Access denied.");
-      } else if (status === 404) {
-        toast.error("Resource not found.");
-      } else if (status === 500) {
-        toast.error("Internal server error. Please try again later.");
-      } else {
-        toast.error(`Unexpected error: ${status}`);
-      }
-    } else if (error.code === "ECONNABORTED") {
-      toast.error("Request timeout. Please try again later.");
+        window.location.href = "/login";
+      } else if (status === 403) toast.error("Access denied");
+      else if (status === 404) toast.error("Not found");
+      else if (status === 500) toast.error("Server error");
     } else {
-      toast.error("Network error. Please check your connection.");
+      toast.error("Network error");
     }
-
     return Promise.reject(error);
-  }
+  },
 );
+
 export default axiosInstance;

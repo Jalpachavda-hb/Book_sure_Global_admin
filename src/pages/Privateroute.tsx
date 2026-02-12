@@ -6,9 +6,9 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const user = sessionStorage.getItem("user"); 
+  const user = sessionStorage.getItem("user");
 
-  return user ? <>{children}</> : <Navigate to="/login" replace />;
+  return user ? <>{children}</> : <Navigate to="/admin/login" replace />;
 };
 
 export default PrivateRoute;
