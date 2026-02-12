@@ -1,18 +1,18 @@
-# Sarjan_Admin React - Free React Tailwind Admin Dashboard Template
+# Book_sure_Global React - Free React Tailwind Admin Dashboard Template
 
-Sarjan_Admin is a free and open-source admin dashboard template built on **React and Tailwind CSS**, providing developers
+Book_sure_Global is a free and open-source admin dashboard template built on **React and Tailwind CSS**, providing developers
 with everything they need to create a comprehensive, data-driven back-end,
 dashboard, or admin panel solution for upcoming web projects.
 
-With Sarjan_Admin, you get access to all the necessary dashboard UI components, elements, and pages required to build a
+With Book_sure_Global, you get access to all the necessary dashboard UI components, elements, and pages required to build a
 feature-rich and complete dashboard or admin panel. Whether you're building dashboard or admin panel for a complex web
-application or a simple website, Sarjan_Admin is the perfect solution to help you get up and running quickly.
+application or a simple website, Book_sure_Global is the perfect solution to help you get up and running quickly.
 
-![Sarjan_Admin React.js Dashboard Preview](./banner.png)
+![Book_sure_Global React.js Dashboard Preview](./banner.png)
 
 ## Overview
 
-Sarjan_Admin provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and
+Book_sure_Global provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and
 control panels. It's built on:
 
 - React 19
@@ -21,28 +21,28 @@ control panels. It's built on:
 
 ### Quick Links
 
-- [✨ Visit Website](https://Sarjan_Admin.com)
-- [📄 Documentation](https://Sarjan_Admin.com/docs)
-- [⬇️ Download](https://Sarjan_Admin.com/download)
+- [✨ Visit Website](https://Book_sure_Global.com)
+- [📄 Documentation](https://Book_sure_Global.com/docs)
+- [⬇️ Download](https://Book_sure_Global.com/download)
 - [🖌️ Figma Design File (Community Edition)](https://www.figma.com/community/file/1214477970819985778)
-- [⚡ Get PRO Version](https://Sarjan_Admin.com/pricing)
+- [⚡ Get PRO Version](https://Book_sure_Global.com/pricing)
 
 ### Demos
 
-- [Free Version](https://free-react-demo.Sarjan_Admin.com/)
-- [Pro Version](https://react-demo.Sarjan_Admin.com)
+- [Free Version](https://free-react-demo.Book_sure_Global.com/)
+- [Pro Version](https://react-demo.Book_sure_Global.com)
 
 ### Other Versions
 
-- [HTML Version](https://github.com/Sarjan_Admin/Sarjan_Admin-free-tailwind-dashboard-template)
-- [Next.js Version](https://github.com/Sarjan_Admin/free-nextjs-admin-dashboard)
-- [Vue.js Version](https://github.com/Sarjan_Admin/vue-tailwind-admin-dashboard)
+- [HTML Version](https://github.com/Book_sure_Global/Book_sure_Global-free-tailwind-dashboard-template)
+- [Next.js Version](https://github.com/Book_sure_Global/free-nextjs-admin-dashboard)
+- [Vue.js Version](https://github.com/Book_sure_Global/vue-tailwind-admin-dashboard)
 
 ## Installation
 
 ### Prerequisites
 
-To get started with Sarjan_Admin, ensure you have the following prerequisites installed and set up:
+To get started with Book_sure_Global, ensure you have the following prerequisites installed and set up:
 
 - Node.js 18.x or later (recommended to use Node.js 20.x or later)
 
@@ -51,7 +51,7 @@ To get started with Sarjan_Admin, ensure you have the following prerequisites in
 Clone the repository using the following command:
 
 ```bash
-git clone https://github.com/Sarjan_Admin/free-react-tailwind-admin-dashboard.git
+git clone https://github.com/Book_sure_Global/free-react-tailwind-admin-dashboard.git
 ```
 
 > Windows Users: place the repository near the root of your drive if you face issues while cloning.
@@ -75,7 +75,7 @@ git clone https://github.com/Sarjan_Admin/free-react-tailwind-admin-dashboard.gi
 
 ## Components
 
-Sarjan_Admin is a pre-designed starting point for building a web-based dashboard using React.js and Tailwind CSS. The
+Book_sure_Global is a pre-designed starting point for building a web-based dashboard using React.js and Tailwind CSS. The
 template includes:
 
 - Sophisticated and accessible sidebar
@@ -105,7 +105,7 @@ All components are built with React and styled using Tailwind CSS for easy custo
 - Complete Figma design file
 - Email support
 
-To learn more about pro version features and pricing, visit our [pricing page](https://Sarjan_Admin.com/pricing).
+To learn more about pro version features and pricing, visit our [pricing page](https://Book_sure_Global.com/pricing).
 
 ## Changelog
 
@@ -155,7 +155,7 @@ A major update with comprehensive redesign and modern React patterns implementat
 - Migrated charts to ApexCharts
 - Revised authentication system
 
-[Read more](https://Sarjan_Admin.com/docs/update-logs/react) on this release.
+[Read more](https://Book_sure_Global.com/docs/update-logs/react) on this release.
 
 ### Version 1.3.7 - [June 20, 2024]
 
@@ -176,15 +176,15 @@ A major update with comprehensive redesign and modern React patterns implementat
 
 ### Version 1.2.0 - [Apr 28, 2023]
 
-- Add Typescript in Sarjan_Admin React.
+- Add Typescript in Book_sure_Global React.
 
 ### Version 1.0.0 - Initial Release - [Mar 13, 2023]
 
-- Initial release of Sarjan_Admin React.
+- Initial release of Book_sure_Global React.
 
 ## License
 
-Sarjan_Admin React.js Free Version is released under the MIT License.
+Book_sure_Global React.js Free Version is released under the MIT License.
 
 ## Support
 
