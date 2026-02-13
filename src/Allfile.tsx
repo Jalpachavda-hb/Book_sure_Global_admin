@@ -8,10 +8,7 @@ import Aboutus from "./pages/Herosection/Aboutus";
 import UserProfiles from "./pages/UserProfiles";
 import Help from "./pages/Herosection/Helpsection";
 
-import OurAssociate from "./pages/Aboutus/OurAssociate";
-import EditAssociate from "./pages/Aboutus/EditAssociate";
-import AddAssociate from "./pages/Aboutus/AddAssociate";
-import InactiveAssociate from "./pages/Aboutus/InactiveAssociate";
+
 import Team from "./pages/Team/Team";
 import InActiveTeam from "./pages/Team/InActiveTeam";
 // =================================
@@ -57,10 +54,7 @@ export default function Allfile() {
       <Route element={<AppLayout />}>
       <Route path="dashboard" element={<HomeCard />} />
         <Route path="Hero_Section" element={<Herosection />} />
-        <Route path="our_associate" element={<OurAssociate />} />
-        <Route path="InActive_associate" element={<InactiveAssociate />} />
-        <Route path="ourassociates/add" element={<AddAssociate />} />
-        <Route path="ourassociates/edit/:id" element={<EditAssociate />} />
+       
         <Route path="Company_highlight" element={<Companyhighlight />} />
         <Route path="aboutmain_section" element={<Aboutmain />} />
         <Route path="help" element={<Help />} />

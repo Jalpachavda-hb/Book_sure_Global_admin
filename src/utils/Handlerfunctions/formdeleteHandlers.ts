@@ -65,51 +65,8 @@ export const deleteFaq = async (id: number): Promise<boolean> => {
   }
 };
 
-// export const deletecontactMail = async (id: number): Promise<boolean> => {
-//   try {
-//     const res = await axiosInstance.delete(
-//       `${API_PATHS.CONTACT.DELETEEMAIL}/${id}`
-//     );
 
-//     if (res.data?.success) {
-//       toast.success(res.data?.message || "Deleted Successfully ✅");
-//       return true;
-//     }
 
-//     toast.error(res.data?.message || "Delete Failed ❌");
-//     return false;
-//   } catch (error: any) {
-//     console.error("Delete Mail Error:", error);
-
-//     toast.error(
-//       error.response?.data?.message || "Something went wrong ❌"
-//     );
-
-//     return false;
-//   }
-// };
-
-export const deleteFounder = async (id: number): Promise<boolean> => {
-  try {
-    const res = await axiosInstance.delete(
-      `${API_PATHS.OURASSOCIATE.DELETEFOUNDER}/${id}`,
-    );
-
-    if (res.data?.success) {
-      toast.success(res.data.message || "Deleted Successfully ✅");
-      return true;
-    }
-
-    toast.error(res.data.message || "Delete Failed ❌");
-    return false;
-  } catch (error: any) {
-    console.error("Delete Founder Error:", error);
-
-    toast.error(error.response?.data?.message || "Something went wrong ❌");
-
-    return false;
-  }
-};
 
 export const deleteService = async (id: number): Promise<boolean> => {
   try {

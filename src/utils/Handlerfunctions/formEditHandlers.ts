@@ -387,25 +387,7 @@ export const updateFounder = async (
   }
 };
 
-export const updateourassociateStatus = async (
-  id: number,
-  status: 0 | 1,
-  refresh: () => void,
-) => {
-  try {
-    const res = await axiosInstance.put(
-      `${API_PATHS.OURASSOCIATE.UPDATESTATUS}/${id}`,
-      { status },
-    );
 
-    if (res.data.success) {
-      toast.success("Status Updated ✅");
-      refresh();
-    }
-  } catch (error) {
-    toast.error("Status Failed ❌");
-  }
-};
 
 export const updateWhyChooseUs = async (
   id: number,

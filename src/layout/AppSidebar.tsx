@@ -1,8 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IoEllipsisHorizontalSharp } from "react-icons/io5";
 import { MdMergeType } from "react-icons/md";
-import { FiSettings } from "react-icons/fi";
+
 import { LuClipboardCheck, LuUserPlus, LuSettings } from "react-icons/lu";
 import { CgWebsite } from "react-icons/cg";
 import { FaAngleDown } from "react-icons/fa";
@@ -12,6 +12,11 @@ import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
 import { FaUserGroup } from "react-icons/fa6";
 import { LuLayoutDashboard } from "react-icons/lu";
+import { fetchWebSetting } from "../utils/Handlerfunctions/getdata";
+import { FaEnvelopeOpenText } from "react-icons/fa6";
+import { IoIosText } from "react-icons/io";
+import { FaDatabase } from "react-icons/fa";
+import { FaCommentDollar } from "react-icons/fa";
 /* ================= TYPES ================= */
 type NavItem = {
   name: string;
@@ -28,7 +33,14 @@ type NavItem = {
     }[];
   }[];
 };
-
+type WebSettingType = {
+  id: number;
+  WebTitle: string;
+  Logo: string;
+  Favicon: string;
+  created_at: string;
+  updated_at: string;
+};
 /* ================= STATIC MENU ================= */
 const navItems: NavItem[] = [
   {
@@ -96,7 +108,7 @@ const navItems: NavItem[] = [
         icon: <LuUserPlus />,
         path: "/admin/Company_highlight",
       },
-      { name: "Our Associate", path: "/admin/our_associate" },
+  
       // { name: "Blog", icon: <LuUserPlus />, path: "/admin/blog" },
       // { name: "Gallery", icon: <LuUserPlus />, path: "/admin/gallery" },
     ],
@@ -126,13 +138,14 @@ const navItems: NavItem[] = [
 
   {
     name: "Pricing Plan",
-    icon: <RiCustomerService2Fill />,
+    icon:<FaCommentDollar />
+,
     path: "/admin/pricing_model",
   },
 
   {
     name: "Data Security",
-    icon: <LuClipboardCheck />,
+    icon: <FaDatabase />,
     path: "/admin/data_security",
   },
 
@@ -166,26 +179,25 @@ const navItems: NavItem[] = [
 ];
 
 const othersItems: NavItem[] = [
-  { name: "Careers", icon: <FiSettings />, path: "/admin/careers" },
-
   {
-    name: "Inquiry",
-    icon: <CgWebsite />,
+    name: "Quote",
+    icon: <IoIosText />,
     subItems: [
       {
-        name: "Inquiry Details",
+        name: "Quote Details",
         icon: <MdMergeType />,
         path: "/admin/inquiry",
       },
       {
-        name: "Inquiry Email",
+        name: "Quote Email",
         icon: <MdMergeType />,
         path: "/admin/inquiry_email",
       },
     ],
   },
+  { name: "Careers", icon: <FaEnvelopeOpenText />, path: "/admin/careers" },
   // { name: "Inquiry", icon: <FiSettings />, path: "/admin/inquiry" },
-  { name: "Contact Us", icon: <FiSettings />, path: "/admin/contact" },
+  // { name: "Contact Us", icon: <FiSettings />, path: "/admin/contact" },
 ];
 
 /* ================= COMPONENT ================= */
@@ -204,8 +216,21 @@ const AppSidebar: React.FC = () => {
     index: number;
   } | null>(null);
   const [openSubSubmenu, setOpenSubSubmenu] = useState<string | null>(null);
-
+  const [webSetting, setWebSetting] = useState<WebSettingType | null>(null);
   // const _subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  useEffect(() => {
+    const getSettings = async () => {
+      try {
+        const data = await fetchWebSetting();
+        setWebSetting(data);
+      } catch (error) {
+        console.error("Error fetching web settings:", error);
+      }
+    };
+
+    getSettings();
+  }, []);
 
   const isActive = useCallback(
     (path?: string) => (path ? location.pathname === path : false),
@@ -236,21 +261,25 @@ const AppSidebar: React.FC = () => {
       {/* LOGO */}
       <div className="py-8 flex justify-center">
         <Link to="/admin/dashboard">
-          {isExpanded || isHovered || isMobileOpen ? (
-            <img
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={1000}
-              height={60}
-            />
+          {webSetting ? (
+            isExpanded || isHovered || isMobileOpen ? (
+              <img
+                src={webSetting.Logo}
+                alt={webSetting.WebTitle}
+                width={1000}
+                height={60}
+              />
+            ) : (
+              <img
+                src={webSetting.Favicon}
+                alt="Favicon"
+                width={40}
+                height={40}
+              />
+            )
           ) : (
-            <img
-              src="/images/logo/sidebarfav.svg"
-              alt="Favicon"
-              width={40}
-              height={40}
-              className="object-contain bg-white rounded"
-            />
+            // Loader or fallback
+            <div className="h-14 w-14 bg-gray-700 rounded animate-pulse"></div>
           )}
         </Link>
       </div>

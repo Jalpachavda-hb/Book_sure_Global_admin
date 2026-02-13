@@ -257,46 +257,7 @@ export const addcontactEmail = async (email: string) => {
   }
 };
 
-interface ApiResponse {
-  success: boolean;
-  message: string;
-}
 
-interface AssociateForm {
-  name: string;
-  designation: string;
-  description: string;
-  image_file: File | null;
-}
-
-export const addFounder = async (form: AssociateForm): Promise<ApiResponse> => {
-  try {
-    const formData = new FormData();
-
-    formData.append("name", form.name);
-    formData.append("designation", form.designation);
-    formData.append("description", form.description);
-
-    if (form.image_file) {
-      formData.append("image", form.image_file);
-    }
-
-    const res = await axiosInstance.post(
-      API_PATHS.OURASSOCIATE.ADDFOUNDER,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      },
-    );
-
-    return res.data;
-  } catch (error: any) {
-    return {
-      success: false,
-      message: error.response?.data?.message || "Add Failed ❌",
-    };
-  }
-};
 
 export const addInquiryEmail = async (email: string) => {
   try {
@@ -332,7 +293,7 @@ export interface PricingModelPayload {
 export const addPricingModel = async (data: PricingModelPayload) => {
   const res = await axiosInstance.post(
     API_PATHS.PRICINGMODEL.ADDPRICINGMODEL,
-    data
+    data,
   );
   return res.data;
 };
@@ -342,10 +303,7 @@ export interface ServicesPayload {
   slug: string;
 }
 export const addservices = async (data: ServicesPayload) => {
-  const res = await axiosInstance.post(
-    API_PATHS.SERVICES.ADDSERVICES,
-    data
-  );
+  const res = await axiosInstance.post(API_PATHS.SERVICES.ADDSERVICES, data);
 
   return res.data;
 };
@@ -379,7 +337,7 @@ export const addSubService = async (form: any): Promise<any> => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
 
     return res.data;
@@ -389,30 +347,24 @@ export const addSubService = async (form: any): Promise<any> => {
       message: error.response?.data?.message || "Add Sub-Service Failed ❌",
     };
   }
-};
-
+};  
 
 export const addTeam = async (form: any) => {
   try {
-    const res = await axiosInstance.post(
-      API_PATHS.TEAM.ADDTEAMMEMBER,
-      {
-        name: form.name,
-        education: form.education || "",
-        experience: form.experience || "",
-        member_type: form.member_type,
-        description: form.description || "",
-        created_by: "1",
-      }
-    );
+    const res = await axiosInstance.post(API_PATHS.TEAM.ADDTEAMMEMBER, {
+      name: form.name,
+      education: form.education || "",
+      experience: form.experience || "",
+      member_type: form.member_type,
+      description: form.description || "",
+      created_by: "1",
+    });
 
     return res.data;
   } catch (error: any) {
     return {
       success: false,
-      message:
-        error?.response?.data?.message ||
-        "Add Team Member Failed",
+      message: error?.response?.data?.message || "Add Team Member Failed",
     };
   }
 };

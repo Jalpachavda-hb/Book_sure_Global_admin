@@ -1,8 +1,8 @@
-// export const BASE_URL = "https://sarjanhomes.in/api/";
-// export const IMGURL = "https://sarjanhomes.in";
+// export const BASE_URL = "https://booksureglobal.com/api/";
+// export const IMGURL = "https://booksureglobal.com";
 
-export const BASE_URL = "https://booksureglobal.com/api/";
-export const IMGURL = "https://booksureglobal.com";
+export const BASE_URL = "http://localhost:8000/api";
+export const IMGURL = "http://localhost:8000";
 
 export const API_PATHS = {
   // PENDINGFORAPPROVALS
@@ -34,7 +34,7 @@ export const API_PATHS = {
   HEROSECTION: {
     GETHEROSECTION: "getHero",
     UPDATEHEROSECTION: "updateHero",
-    GETDASHBOARDCOUNT : "getDashboardCardData"
+    GETDASHBOARDCOUNT: "getDashboardCardData",
   },
   HOMEABOUTSECTION: {
     GETHOMEABOUT: "getAbout",
@@ -110,15 +110,7 @@ export const API_PATHS = {
     EDITCOMPANYHIGHTLIGHT: "aboutmain/highlights",
   },
 
-  OURASSOCIATE: {
-    ADDFOUNDER: "add",
-    GETBYID: "getbyid",
-    UPDATEBYID: "update",
-    UPDATESTATUS: "status",
-    DELETEFOUNDER: "delete",
-    GETACTIVEFOUNDER: "active",
-    GETINACTIVEFOUNDER: "inactive",
-  },
+
 
   INQUIRY: {
     GETPRICINGINQUIRY: "inq/getpricinginquiries",

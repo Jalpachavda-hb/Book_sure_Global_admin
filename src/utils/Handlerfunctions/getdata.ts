@@ -253,47 +253,6 @@ export const GetAboutmain = async () => {
   }
 };
 
-export const getActiveAssociate = async () => {
-  try {
-    const res = await axiosInstance.get(
-      API_PATHS.OURASSOCIATE.GETACTIVEFOUNDER,
-    );
-
-    // ✅ Return only array
-    return res.data?.data || [];
-  } catch (error) {
-    console.error("Get Active Associate Error:", error);
-    return [];
-  }
-};
-
-export const getInactiveAssociate = async () => {
-  try {
-    const res = await axiosInstance.get(
-      API_PATHS.OURASSOCIATE.GETINACTIVEFOUNDER,
-    );
-
-    // ✅ Return only array
-    return res.data?.data || [];
-  } catch (error) {
-    console.error("Get InActive Associate Error:", error);
-    return [];
-  }
-};
-
-export const getAssociateById = async (id: number) => {
-  try {
-    const res = await axiosInstance.get(
-      `${API_PATHS.OURASSOCIATE.GETBYID}/${id}`,
-    );
-
-    return res.data?.data || null; // ✅ single object
-  } catch (error) {
-    console.error("Get Associate By ID Error:", error);
-    return null;
-  }
-};
-
 export const getWhyChooseUs = async () => {
   try {
     const res = await axiosInstance.get(API_PATHS.WHYCHOSSEUS.GETWHYCHOOSEUS);
@@ -449,7 +408,6 @@ export const getInActiveSubServiceBySlug = async (slug: string) => {
   }
 };
 
-
 export const getActiveteam_member = async () => {
   try {
     const res = await axiosInstance.get(API_PATHS.TEAM.GETTEAMMEMBERS);
@@ -475,7 +433,7 @@ export const getInactiveteam_member = async () => {
 export const GetTeamMemberById = async (id: number) => {
   try {
     const res = await axiosInstance.get(
-      `${API_PATHS.TEAM.GETTEAMMEMBERBYID}/${id}`
+      `${API_PATHS.TEAM.GETTEAMMEMBERBYID}/${id}`,
     );
 
     return res.data;

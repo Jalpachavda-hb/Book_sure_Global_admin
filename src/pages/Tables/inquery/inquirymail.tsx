@@ -92,7 +92,7 @@ export default function Inquirymail() {
 
   return (
     <div className="font-poppins text-gray-800 dark:text-white">
-      <h3 className="text-lg font-semibold mb-5">Inquiry Emails</h3>
+      <h3 className="text-lg font-semibold mb-5">Quote Emails</h3>
 
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:bg-white/[0.03] px-4 pb-3 pt-4 sm:px-6">
         {/* ✅ Add Button */}
@@ -103,7 +103,7 @@ export default function Inquirymail() {
             className="!bg-indigo-700 hover:!bg-indigo-900 text-white"
             onClick={() => navigate("/admin/inquiry_email/add")}
           >
-            + Add New Inquiry Email
+            + Add New Quote Inquiry Email
           </Button>
         </div>
 
