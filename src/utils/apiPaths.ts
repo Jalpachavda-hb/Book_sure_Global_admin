@@ -1,8 +1,8 @@
-// export const BASE_URL = "https://booksureglobal.com/api/";
-// export const IMGURL = "https://booksureglobal.com";
+export const BASE_URL = "https://booksureglobal.com/api/";
+export const IMGURL = "https://booksureglobal.com";
 
-export const BASE_URL = "http://localhost:8000/api";
-export const IMGURL = "http://localhost:8000";
+// export const BASE_URL = "http://localhost:8000/api";
+// export const IMGURL = "http://localhost:8000";
 
 export const API_PATHS = {
   // PENDINGFORAPPROVALS
