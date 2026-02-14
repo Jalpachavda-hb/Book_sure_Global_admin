@@ -151,7 +151,7 @@ export default function InActiveSoftware() {
                         <img
                           src={item.image}
                           alt="software"
-                          className="w-20 h-20 object-cover rounded"
+                          className="w-40 h-20 object-cover rounded"
                         />
                       </TableCell>
 

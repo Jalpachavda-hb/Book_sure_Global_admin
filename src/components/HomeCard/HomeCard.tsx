@@ -41,7 +41,7 @@ export default function HomeCard() {
           </h2>
 
           <img
-            src="/images/cardservices.jpg"
+            src="images/cardservices.jpg"
             alt="services"
             className="h-10 w-16 object-contain"
           />
@@ -64,7 +64,7 @@ export default function HomeCard() {
           </h2>
 
           <img
-            src="/images/expirience.jpg"
+            src="images/expirience.jpg"
             alt="experience"
             className="h-10 w-16 object-contain"
           />
@@ -87,7 +87,7 @@ export default function HomeCard() {
           </h2>
 
           <img
-            src="/images/inquery.jpg"
+            src="images/inquery.jpg"
             alt="inquiry"
             className="h-10 w-16 object-contain"
           />
