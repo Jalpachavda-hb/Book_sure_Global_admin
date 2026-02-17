@@ -8,7 +8,6 @@ import Aboutus from "./pages/Herosection/Aboutus";
 import UserProfiles from "./pages/UserProfiles";
 import Help from "./pages/Herosection/Helpsection";
 
-
 import Team from "./pages/Team/Team";
 import InActiveTeam from "./pages/Team/InActiveTeam";
 // =================================
@@ -46,15 +45,17 @@ import AddSubServices from "./pages/Services/Addsubservices";
 import EditSubService from "./pages/Services/Editsubservice";
 import InAtiveSubServicesTable from "./pages/Services/Inactivesubservices";
 import AddTeamMember from "./pages/Team/Addteam";
-import HomeCard from "./components/HomeCard/HomeCard";
+import Home from "./pages/Dashboard/Home";
 import EditTeammember from "./pages/Team/EditTeam";
+import CalendlyBookings from "./pages/Calendly/CalendlyBookings";
 export default function Allfile() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-      <Route path="dashboard" element={<HomeCard />} />
+        <Route path="dashboard" element={<Home />} />
+
         <Route path="Hero_Section" element={<Herosection />} />
-       
+        <Route path="event" element={<CalendlyBookings />} />
         <Route path="Company_highlight" element={<Companyhighlight />} />
         <Route path="aboutmain_section" element={<Aboutmain />} />
         <Route path="help" element={<Help />} />
@@ -78,7 +79,7 @@ export default function Allfile() {
         <Route path="team" element={<Team />} />
         <Route path="inactive_team" element={<InActiveTeam />} />
         <Route path="team/add" element={<AddTeamMember />} />
-          <Route path="team/edit/:id" element={<EditTeammember />} />
+        <Route path="team/edit/:id" element={<EditTeammember />} />
 
         <Route
           path="inactive_pricing_model"

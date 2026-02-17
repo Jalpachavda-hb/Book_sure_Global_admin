@@ -441,3 +441,43 @@ export const GetTeamMemberById = async (id: number) => {
     return { success: false };
   }
 };
+
+
+
+export const syncCalendlyEvents = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.CALENDLY.SYNC
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Sync failed:", error);
+    return { success: false };
+  }
+};
+
+export const getCalendlyEvents = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.CALENDLY.GET_EVENTS
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Fetch failed:", error);
+    return {
+      success: false,
+      data: [],
+    };
+  }
+};
+
+export const getTodayActiveMeetings = async () => {
+  try {
+    const response = await axiosInstance.get(
+      API_PATHS.CALENDLY.TODAY_ACTIVE
+    );
+    return response.data;
+  } catch (error) {
+    return { success: false, data: [] };
+  }
+};

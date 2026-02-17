@@ -1,5 +1,5 @@
 import HomeCard from "../../components/HomeCard/HomeCard";
-
+import TodayMeeting from "../../components/HomeCard/TodayMeeting";
 
 export default function Home() {
   return (
@@ -10,6 +10,7 @@ export default function Home() {
             Dashboard
           </h3>
           <HomeCard />
+          <TodayMeeting/>
         </div>
 
         <div className="col-span-12"></div>

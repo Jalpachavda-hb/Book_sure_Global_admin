@@ -1,11 +1,16 @@
-export const BASE_URL = "https://booksureglobal.com/api/";
-export const IMGURL = "https://booksureglobal.com";
+// export const BASE_URL = "https://booksureglobal.com/api/";
+// export const IMGURL = "https://booksureglobal.com";
 
-// export const BASE_URL = "http://localhost:8000/api";
-// export const IMGURL = "http://localhost:8000";
+export const BASE_URL = "http://localhost:8000/api";
+export const IMGURL = "http://localhost:8000";
 
 export const API_PATHS = {
-  // PENDINGFORAPPROVALS
+
+  CALENDLY: {
+  SYNC: "calendly/sync",
+  GET_EVENTS: "calendly/events",
+  TODAY_ACTIVE: "calendly/today-active",
+},
 
   // WEBSETTING
 
@@ -109,8 +114,6 @@ export const API_PATHS = {
     OURMISIION: "aboutmain/highlights",
     EDITCOMPANYHIGHTLIGHT: "aboutmain/highlights",
   },
-
-
 
   INQUIRY: {
     GETPRICINGINQUIRY: "inq/getpricinginquiries",
